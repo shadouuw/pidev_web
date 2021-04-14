@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test index{% endblock %}
+
+
+
+{% block body %}
+
+
+
+
+    {{ include('cours_c/nav.html.twig') }}
+        <!-- partial -->
+
+                <div class="page-header">
+                    <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-warning     text-white mr-2">
+                  <i class="mdi mdi-google-classroom"></i>
+                </span> Tests
+                    </h3>
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Recent Courses</h4>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>IdTest</th>
+                                            <th>Question1</th>
+                                            <th>Question2</th>
+                                            <th>Question3</th>
+                                            <th>Question4</th>
+                                            <th>Question5</th>
+                                            <th>Note</th>
+                                            <th>IdUtilisateur</th>
+                                            <th>Status</th>
+                                            <th>Temps</th>
+
+                                            <th><a  href="{{ path('test_new') }}" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn" id="add-task">+ Add Test</a></th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {% for test in tests %}
+                                            <tr>
+                                                <td>{{ test.idTest }}</td>
+                                                <td>{{ test.question1 }}</td>
+                                                <td>{{ test.question2 }}</td>
+                                                <td>{{ test.question3 }}</td>
+                                                <td>{{ test.question4 }}</td>
+                                                <td>{{ test.question5 }}</td>
+                                                <td>{{ test.note }}</td>
+                                                <td>{{ test.idUtilisateur }}</td>
+                                                <td>{{ test.status }}</td>
+                                                <td>{{ test.temps }}</td>
+
+                                                <td>
+
+                                                    <a href="{{ path('test_edit', {'idTest': test.idTest})}}" class="btn btn-gradient-success btn-rounded ">edit</a>
+                                                </td>
+<td>
+    {{ include('test/_delete_form.html.twig') }}</td>
+
+<td><a href="{{ path('test_edit', {'idTest': test.idTest})}}" class="btn btn-gradient-info btn-rounded">Correct</a></td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="6">no records found</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- content-wrapper ends -->
+                <!-- partial:partials/_footer.html -->
+
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="{{asset('assets/vendors/chart.js/Chart.min.js')}}"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{{asset('assets/js/off-canvas.js')}}"></script>
+    <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
+    <script src="{{asset('assets/js/misc.js') }}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="{{asset('assets/js/dashboard.js')}}"></script>
+    <script src="{{asset('public/assets/js/todolist.js')}}"></script>
+    <!-- End custom js for this page -->
+
+
+
+{% endblock %}
