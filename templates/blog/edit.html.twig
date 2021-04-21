@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Blog{% endblock %}
+
+{% block body %}
+    <h1>Edit Blog</h1>
+
+    {{ include('blog/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+{% endblock %}

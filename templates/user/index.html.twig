@@ -58,6 +58,7 @@
                                             <th>Email</th>
                                             <th>Role</th>
                                             <th><a  href="{{ path('user_new2') }}" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn" id="add-task">+ Add User</a></th>
+                                           <th><a  href="{{ path('user_tri') }}" class="add btn btn-gradient-secondary font-weight-bold todo-list-add-btn" id="add-task">Sort User</a></th>
 
 
                                         </tr>
@@ -80,6 +81,7 @@
                                             <td> {{  user.email }}</td>
                                             <td>{{ user.role }}</td>
                                                     <td> <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-gradient-success btn-rounded btn-fw">edit</a></td>
+
                                             <td> {{ include('user/_delete_form.html.twig') }}</td>
                                         </tr>
                                                     {% else %}

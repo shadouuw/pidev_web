@@ -23,9 +23,25 @@
                 <div class="row">
                     <div class="col-12 grid-margin">
                         <div class="card">
+                            <style>
+                                #search
+                                {
+                                    width:100%;
+                                }
+                                #search2
+                                {
+                                    width: 15%;
+                                }
+                            </style>
                             <div class="card-body">
                                 <h4 class="card-title">Recent Courses</h4>
+                                <form action="{{ path('search_cours') }}" method="get">
+                                <label>  <input value="" id="search" name="nom"  class="form-control " placeholder="search .. "> </label>
+                                <button class="btn btn-gradient-success ">search</button>
+                                </form>
+
                                 <div class="table-responsive">
+
                                     <table class="table">
                                         <thead>
                                         <tr>
@@ -35,12 +51,18 @@
                                             <th>Lien</th>
                                             <th>Lien2</th>
                                             <th><a  href="{{ path('cours_c_new') }}" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn" id="add-task">+ Add Course</a></th>
+
+                                            <th><a  href="{{ path('tri_cours') }}" class="add btn btn-gradient-secondary font-weight-bold todo-list-add-btn" id="add-task">Sort course</a></th>
+
+                                        </tr>
+
                                         </tr>
                                         </thead>
                                         <tbody>
 
                                         {% for cour in cours %}
                                             <tr>
+
                                                 <td>{{ cour.Idcours }}</td>
                                                 <td>{{ cour.nomCours }}</td>
                                                 <td>{{ cour.domaine }}</td>

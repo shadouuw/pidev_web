@@ -1,0 +1,121 @@
+{% block title %}Blog form{% endblock %}
+{% block body %}
+    {{ include('cours_c/nav.html.twig') }}
+
+    <style>
+        @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+        .error-message {
+
+            color: #D8000C;
+            background-color: #FFD2D2;
+
+        }
+
+        .isa_info i, .isa_success i, .isa_warning i, .error-message  {
+            margin:10px 22px;
+            font-size:1em;
+            vertical-align:middle;
+        }
+
+
+        .isa_info, .isa_success, .isa_warning, .error-message {
+            margin: 10px 0px;
+            padding: 12px;
+        }
+
+
+    </style>
+
+    {{ form_start(form) }}
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                {% if button_label == 'Add' %}
+                    <h4 class="card-title">Add new Blog </h4>
+                    <p class="card-description"> Please fill all the labels </p>
+                {% else %}
+                    <h4 class="card-title">Update Blog</h4>
+                    <p class="card-description"> Please fill all the labels </p>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="exampleInputName1">Blog name</label>
+
+                    {{ form_widget(form.nom,{ 'attr' : {'class' : 'form-control'}}) }}
+
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">Description</label>
+                    {{ form_widget(form.description,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label>Photo link</label>
+                    <input type="file" name="img[]" class="file-upload-default">
+                    <div class="input-group col-xs-12">
+
+                        {{ form_widget(form.img,{ 'attr' : {'class' : 'form-control file-upload-info'}}) }}
+                        <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-gradient-primary" type="button">Upload</button>
+                          </span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-gradient-primary mr-2">{{ button_label|default('Add') }}</button>
+                <button class="btn btn-light">Cancel</button>
+
+                {% if  errors is empty %}
+                {% else %}
+                    {% for error in errors %}
+                        <div class="  error-message  form-group">
+                            <i class="fa fa-warning"></i>
+                            {{ error.message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {{ form_end(form) }}
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+
+    <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="{{asset('assets/vendors/chart.js/Chart.min.js')}}"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{{asset('assets/js/off-canvas.js')}}"></script>
+    <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
+    <script src="{{asset('assets/js/misc.js') }}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="{{asset('assets/js/dashboard.js')}}"></script>
+    <script src="{{asset('assets/js/todolist.js')}}"></script>
+    <script src="{{asset('assets/js/file-upload.js')}}"></script>
+    <!-- End custom js for this page -->
+
+
+{% endblock %}

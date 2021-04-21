@@ -1,4 +1,4 @@
-{% block title %}Back index{% endblock %}
+
 {{ include('cours_c/nav.html.twig') }}
 
                     <div class="row">
@@ -6,7 +6,7 @@
                             <div class="card bg-gradient-danger card-img-holder text-white">
                                 <div class="card-body">
                                     <img src="{{asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
-                                    <h4 class="font-weight-normal mb-3">Total Subcribers <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                                        <h4 class="font-weight-normal mb-3">Total Subcribers <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                                     </h4>
                                     <h2 class="mb-5">{{ user_nmbr }}</h2>
 
@@ -121,11 +121,11 @@
                         </div>
                     </div>
 <div class="row">
-    <div class="col-md-7 grid-margin stretch-card" hidden>
+    <div class="col-md-7 grid-margin stretch-card" >
         <div class="card">
             <div class="card-body">
                 <div class="clearfix">
-                    <h4 class="card-title float-left">Visit And Sales Statistics</h4>
+                    <h4 class="card-title float-left">Age statistics</h4>
                     <div id="visit-sale-chart-legend" class="rounded-legend legend-horizontal legend-top-right float-right"></div>
                 </div>
                 <canvas id="visit-sale-chart" class="mt-4"></canvas>
@@ -141,10 +141,16 @@
             </div>
         </div>
     </div>
+
+
 </div>
 <input  id="stat1"  value="{{st1}}" hidden>
 <input  id="stat2"  value="{{st2}}" hidden>
 <input  id="stat3" value="{{st3}}" hidden>
+<input  id="stat11"  value="{{stat1}}" hidden>
+<input  id="stat22"  value="{{stat2}}" hidden>
+<input  id="stat33" value="{{stat3}}" hidden>
+
 
 </div>
 

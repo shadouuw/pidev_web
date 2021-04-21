@@ -1,0 +1,129 @@
+{{ include('front/nav.html.twig') }}
+
+
+
+<div class="page-banner-area item-bg3">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="container">
+                <div class="page-banner-content">
+                    <h2>Blog Details</h2>
+                    <ul>
+                        <li>
+                            <a href="index.html">Home</a>
+                        </li>
+                        <li>Blog Details</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<section class="blog-details-area ptb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="blog-details-desc">
+                    <div class="article-image">
+                        <img src="{{ asset(blog.img) }}" alt="image">
+                    </div>
+                    <div class="article-content">
+                        <div class="entry-meta">
+                            <ul>
+                                <li>
+                                    <span>Posted On:</span>
+                                    <a href="#"> {{ blog.datePostule ? blog.datePostule|date('Y-m-d') : '' }}</a>
+                                </li>
+                                <li>
+                                    <span>Posted By:</span>
+                                    <a href="#">{{ blog.nomAdmin }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <h3>{{ blog.nom }}</h3>
+
+                        <blockquote class="wp-block-quote">
+                            <p>{{ blog.description }}</p>
+                        </blockquote>
+
+                        </a>
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+{% set img="" %}
+                {% set nom="" %}
+
+                <div class="comments-area">
+                    <h3 class="comments-title"> Comments:</h3>
+                    <ol class="comment-list">
+                        <li class="comment">
+                            {% for c in comments %}
+                                {% for u in users %}
+                               {% if u.id == c.idUser %}
+                                  {% set img = u.img %}
+                                    {% set nom = u.nom %}
+                                    {% endif %}
+                                    {% endfor %}
+
+
+
+                            <div class="comment-body">
+                                <footer class="comment-meta">
+                                    <div class="comment-author vcard">
+                                        <img src="{{ asset(img) }}" class="avatar" alt="image">
+                                        <b class="fn">{{ nom }}</b>
+                                    </div>
+                                    <div class="comment-metadata">
+                                        <a href="#">
+                                            <span>{{ c.date ? c.date|date('Y-m-d') : '' }}</span>
+                                        </a>
+                                    </div>
+                                </footer>
+                                <div class="comment-content">
+                                    <p>{{ c.contenu }}</p>
+                                </div>
+                                <div class="reply">
+                                    <a href="#" class="comment-reply-link">Reply</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </li>
+                    </ol>
+                    <div class="comment-respond">
+                        <h3 class="comment-reply-title">Leave a Reply</h3>
+                        {{ form_start(form) }}
+                            <p class="comment-notes">
+                                <span id="email-notes">Your email address will not be published.</span>
+                                Required fields are marked
+                                <span class="required">*</span>
+                            </p>
+
+                            <p class="comment-form-comment">
+                                <label>Comment</label>
+                                {{ form_widget(form.contenu,{ 'attr' : {'class' : 'form-control'}}) }}
+                            </p>
+
+                            <p class="form-submit">
+                                <input type="submit" name="submit" id="submit" class="submit" value="Post A Comment">
+                            </p>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+</div>
+</section>
+
+
+
+
+
+{{ include('front/footer.html.twig') }}

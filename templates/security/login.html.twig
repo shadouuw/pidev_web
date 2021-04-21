@@ -209,6 +209,27 @@ color: orangered;
     left: 800px;
 }
 </style>
+
+
+
+
+
+{% set ch = "" %}
+{% set s = 0 %}
+
+{% for u in user %}
+
+    {% set ch = ch ~ u.img %}
+    {% set s = s + 1 %}
+
+{% endfor %}
+
+
+
+<input hidden id="nb" value="{{ s }}">
+<div hidden id="player"  data-method="{{ ch }}" data-id="{{ ch }}"></div>
+
+
 <section class="login-area ptb-100">
     <div class="container">
 
@@ -220,16 +241,22 @@ color: orangered;
 
 
             {% endif %}
+
+
             <form action="{{ path('login') }}" method="post">
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" class="form-control"  name="_username" value="{{ last_username }}" placeholder="Username">
+                    <input type="text" class="form-control"   name="_username" value="{{ last_username }}" placeholder="Username">
                 </div>
+
+
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control"  name="_password"  placeholder="Password">
+                    <input type="password" class="form-control"  name="_password"  value="{{ password }}" placeholder="Password">
                 </div>
+
+
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-check">
@@ -242,6 +269,8 @@ color: orangered;
                     </div>
                 </div>
                 <button type="submit">Login</button>
+
+                <video   id="video" width="1" height="1" autoplay muted></video>
             </form>
             <div class="important-text">
                 <p>Don't have an account? <a href="{{ path('user_new') }}">Register now!</a></p>
@@ -276,6 +305,4 @@ color: orangered;
 <script src="{{asset('assets2/js/main.js')}}"></script>
 
 
-
 {%endblock  %}
-
