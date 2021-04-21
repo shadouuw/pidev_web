@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block title %}Test index{% endblock %}
+{{ include('front/nav.html.twig') }}
+
+
+
+{% set t =  0 %}
+
+
+{% for t1 in tests %}
+    {% set t = t1 %}
+{% endfor %}
+
+<section class="register-area ptb-50">
+    <div class="container">
+
+        <div class="register-form">
+            {{ form_start(form) }}
+            <h2>Your test : </h2>
+
+                <div class="form-group">
+                    <label>{{ t.question1 }}</label>
+
+                    {{ form_widget(form.reponse1,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label>{{ t.question2 }}</label>
+                    {{ form_widget(form.reponse2,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label>{{ t.question3 }}</label>
+                    {{ form_widget(form.reponse3,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label>{{ t.question4 }}</label>
+                    {{ form_widget(form.reponse4,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label>{{ t.question5 }}</label>
+                    {{ form_widget(form.reponse5,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <button type="submit">{{ button_label|default('Save') }}</button>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+{{ include('front/nav.html.twig') }}
+{% endblock %}
