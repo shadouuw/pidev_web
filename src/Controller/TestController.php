@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use App\Entity\Test;
 use App\Entity\User;
 use App\Form\TestType;
+use App\Form\Test3Type;
 use App\Repository\TestRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +30,9 @@ class TestController extends AbstractController
 
         return $this->render('test/index.html.twig', [
             'tests' => $tests,
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
             'img' => $this->getUser()->getImg(),
             'user' => $user = $this->getUser()->getNom()
         ]);
@@ -99,28 +104,23 @@ class TestController extends AbstractController
             'form' => $form->createView(),
             'nombr' => $n1,
             'img' => $this->getUser()->getImg(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
             'errors'=> $error,
 
             'user' => $this->getUser()->getNom()
         ]);
     }
 
-    /**
-     * @Route("/{idTest}", name="test_show", methods={"GET"})
-     */
-    public function show(Test $test): Response
-    {
-        return $this->render('test/show.html.twig', [
-            'user' => $this->getUser()->getNom(),
-            'test' => $test,
-        ]);
-    }
+
 
     /**
      * @Route("/{idTest}/edit", name="test_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Test $test): Response
     {
+        $errors=null;
         $form = $this->createForm(TestType::class, $test);
         $form->handleRequest($request);
 
@@ -132,7 +132,54 @@ class TestController extends AbstractController
 
         return $this->render('test/edit.html.twig', [
             'test' => $test,
+            'errors'=> $errors  ,
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
             'user' => $this->getUser()->getNom(),
+            'img' => $this->getUser()->getImg(),
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/{idTest}/correct", name="test_correct", methods={"GET","POST"})
+     */
+    public function correct(Request $request, Test $test,TestRepository  $testRepository): Response
+    {
+        $errors=null;
+        $t = $testRepository->createQueryBuilder('t')->select('t')->where("t.idTest = " . $test->getIdTest() . " ")->getQuery()->getSingleResult();
+        $form = $this->createForm(Test3Type::class, $test);
+        $form->handleRequest($request);
+
+        if($test ->getStatus()!=1)
+        {
+            return $this->redirectToRoute('test_index');
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+ $test->setStatus(2);
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('test_index');
+        }
+
+
+        if($testRepository->createQueryBuilder('t')->select('count(t)')->where("t.idTest = ".$test->getIdTest()." " )->andWhere('t.note = -1')->andWhere('t.status = 1')->getQuery()->getSingleResult() != 0 ) {
+            $t = $testRepository->createQueryBuilder('t')->select('t')->where("t.idTest = " . $test->getIdTest() . " ")->getQuery()->getSingleResult();
+        }
+        else
+        {
+            return $this->redirectToRoute('test_index');
+        }
+        return $this->render('test/correct.html.twig', [
+            'test' => $test,
+            't' => $t,
+            'errors'=> $errors  ,
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
+            'user' => $this->getUser()->getNom(),
+            'img' => $this->getUser()->getImg(),
             'form' => $form->createView(),
         ]);
     }

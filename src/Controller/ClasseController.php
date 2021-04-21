@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Classe;
+use App\Entity\Notification;
 use App\Form\ClasseType;
 use App\Repository\ClasseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +25,9 @@ class ClasseController extends AbstractController
         return $this->render('classe/index.html.twig', [
             'classes' => $classeRepository->findAll(),
             'img' => $this->getUser()->getImg(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
            'user' => $this->getUser()->getNom()
         ]);
     }
@@ -56,6 +60,9 @@ if($form->isSubmitted())
             'classe' => $classe,
             'img' => $this->getUser()->getImg(),
             'user' => $this->getUser()->getNom(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
             'form' => $form->createView(),
             'errors' => $errors
         ]);
@@ -80,6 +87,9 @@ if($form->isSubmitted())
             'img' => $this->getUser()->getImg(),
             'user' => $this->getUser()->getNom(),
             'form' => $form->createView(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
             'errors' => $errors
         ]);
     }

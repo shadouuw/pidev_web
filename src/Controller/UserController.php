@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use App\Entity\User;
 use App\Form\User1Type;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/user")
@@ -35,14 +38,17 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $users,
             'user' => $this->getUser()->getNom(),
-            'img' => $this->getUser()->getImg()
+            'img' => $this->getUser()->getImg(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
         ]);
     }
 
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,ValidatorInterface $validator): Response
     {
 
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -57,7 +63,7 @@ class UserController extends AbstractController
         $user = new User();
         $form = $this->createForm(User1Type::class, $user);
         $form->handleRequest($request);
-
+        $errors = $validator->validate($user);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             echo $user->getPassword();
@@ -73,7 +79,9 @@ class UserController extends AbstractController
 
         return $this->render('user/new.html.twig', [
             'user' => $user->getNom(),
+            'id' => $user->getId(),
             'form' => $form->createView(),
+            'errors' => $errors
 
         ]);
     }
@@ -103,23 +111,18 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/new_back.html.twig', [
-            'user1' => $user->getNom(),
+            'user' => $user->getNom(),
             'form' => $form->createView(),
+            'img' =>$this->getUser()->getImg(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
 
         ]);
     }
 
 
 
-    /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
-     */
-    public function show(User $user): Response
-    {
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
-        ]);
-    }
 
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
@@ -136,8 +139,11 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'user1' => $this->getUser()->getNom(),
+            'users' => $user,
+            'user' => $this->getUser()->getNom(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
             'form' => $form->createView(),
         ]);
     }
@@ -155,4 +161,25 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user_index');
     }
+
+
+
+    /**
+     * @Route("/user_tri", name="user_tri", methods={"GET"})
+     */
+    public function index4(UserRepository $userRepository): Response
+    {
+        $users = $userRepository->createQueryBuilder('u')->select('u')->orderBy('u.age')->getQuery()->getResult();
+
+        return $this->render('user/index.html.twig', [
+            'users' => $users,
+            'user' => $this->getUser()->getNom(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
+            'img' => $this->getUser()->getImg()
+        ]);
+    }
+
+
 }

@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use  Symfony\Component\Validator\Constraints as Assert;
 /**
  * User
  *
@@ -27,12 +27,16 @@ class User implements UserInterface
      *
      * @ORM\Column(name="nom_utilisateur", type="string", length=15, nullable=true)
      */
+
+
     private $nomUtilisateur;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="mot_de_passe", type="string", length=15, nullable=true)
+     * /**
+     * @ORM\Column(name="mot_de_passe", type="string", length=255, nullable=false)
+     * @Assert\Length(min=10,minMessage="Password length must be greater than 10 ")
+     * @Assert\NotNull(message="password is empty ")
      */
     private $motDePasse;
 
@@ -52,13 +56,16 @@ class User implements UserInterface
 
     /**
      * @var int|null
-     * @Assert\Range(min=10,max=40,minMessage=" Age must be between 10 and 40" , maxMessage="Age Must be between 10 and 40")
+     * @Assert\Range(min=4,max=15,minMessage=" Age must be between 4 and 15" , maxMessage="Age Must be between 4 and 15")
      * @ORM\Column(name="age", type="integer", nullable=true)
      */
     private $age;
 
     /**
      * @var string|null
+     * @Assert\Email(
+     * message = "The email '{{ value }}' is not a valid email."
+     * )
      *
      * @ORM\Column(name="email", type="string", length=50, nullable=true)
      */
@@ -91,6 +98,15 @@ class User implements UserInterface
      * @ORM\Column(name="metier", type="string", length=50, nullable=false, options={"default"="to_update"})
      */
     private $metier = 'to_update';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="string", length=50, nullable=false, options={"default"="to_update"})
+     */
+    private $token = 'to_update';
+
+
 
     /**
      * @var int
@@ -206,6 +222,17 @@ class User implements UserInterface
     }
 
     public function setAge(?int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+    public function getToken(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setToken(?int $age): self
     {
         $this->age = $age;
 
