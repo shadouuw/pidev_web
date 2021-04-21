@@ -1,0 +1,101 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}Cours index{% endblock %}
+
+{% block body %}
+
+    {{ include('cours_c/nav.html.twig') }}
+    <div class="page-header">
+        <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white mr-2">
+                  <i class="mdi mdi-home"></i>
+                </span> Course
+        </h3>
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Recent Courses</h4>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Nom_cours</th>
+                                            <th>Domaine</th>
+                                            <th>Lien</th>
+                                            <th>Lien2</th>
+                                            <th><a  href="{{ path('cours_c_new') }}" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn" id="add-task">+ Add Course</a></th>
+                                            <th><a  href="{{ path('tri_cours') }}" class="add btn btn-gradient-secondary font-weight-bold todo-list-add-btn" id="add-task">Sort course</a></th>
+                                        </tr>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {% for cour in cours %}
+                                            <tr>
+                                                <td>{{ cour.Idcours }}</td>
+                                                <td>{{ cour.nomCours }}</td>
+                                                <td>{{ cour.domaine }}</td>
+                                                <td>{{ cour.lien }}</td>
+                                                <td>{{ cour.lien2 }}</td>
+                                                <td>
+
+                                                <a href="{{ path('cours_c_edit', {'id': cour.Idcours}) }}" class="btn btn-gradient-success btn-rounded ">edit</a>
+
+                                                </td>
+                                                <td> {{ include('cours_c/_delete_form.html.twig') }}</td>
+
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="6">no records found</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- content-wrapper ends -->
+                <!-- partial:partials/_footer.html -->
+
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="{{asset('assets/vendors/chart.js/Chart.min.js')}}"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{{asset('assets/js/off-canvas.js')}}"></script>
+    <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
+    <script src="{{asset('assets/js/misc.js') }}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="{{asset('assets/js/dashboard.js')}}"></script>
+    <script src="{{asset('public/assets/js/todolist.js')}}"></script>
+    <!-- End custom js for this page -->
+
+
+{% endblock %}

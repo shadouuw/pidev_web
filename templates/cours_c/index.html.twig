@@ -1,0 +1,179 @@
+
+{{ include('cours_c/nav.html.twig') }}
+
+                    <div class="row">
+                        <div class="col-md-4 stretch-card grid-margin">
+                            <div class="card bg-gradient-danger card-img-holder text-white">
+                                <div class="card-body">
+                                    <img src="{{asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
+                                    <h4 class="font-weight-normal mb-3">Total Subcribers <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                                    </h4>
+                                    <h2 class="mb-5">{{ user_nmbr }}</h2>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 stretch-card grid-margin">
+                            <div class="card bg-gradient-info card-img-holder text-white">
+                                <div class="card-body">
+                                    <img src="{{asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
+                                    <h4 class="font-weight-normal mb-3">Total Courses <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                                    </h4>
+                                    <h2 class="mb-5">{{ course_nmbr }}</h2>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 stretch-card grid-margin">
+                            <div class="card bg-gradient-success card-img-holder text-white">
+                                <div class="card-body">
+                                    <img src="{{asset('assets/images/dashboard/circle.svg')}}   " class="card-img-absolute" alt="circle-image" />
+                                    <h4 class="font-weight-normal mb-3">Visitors Online <i class="mdi mdi-diamond mdi-24px float-right"></i>
+                                    </h4>
+                                    <h2 class="mb-5">1</h2>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Recent Courses</h4>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Nom_cours</th>
+                                            <th>Domaine</th>
+                                            <th>Lien</th>
+                                            <th>Lien2</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {% for cour in cours %}
+                                            <tr>
+                                                <td>{{ cour.Idcours }}</td>
+                                                <td>{{ cour.nomCours }}</td>
+                                                <td>{{ cour.domaine }}</td>
+                                                <td>{{ cour.lien }}</td>
+                                                <td>{{ cour.lien2 }}</td>
+                                                <td>
+
+                                                    <a href="{{ path('cours_c_edit', {'id': cour.Idcours}) }}">edit</a>
+                                                </td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="6">no records found</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+                    <div class="row">
+                        <div class="col-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="d-flex">
+                                        <div class="d-flex align-items-center mr-4 text-muted font-weight-light">
+<h1>Statistics :</h1>
+
+                                        </div>
+                                        <div class="d-flex align-items-center text-muted font-weight-light">
+
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+
+                                    </div>
+                                    <div class="d-flex mt-5 align-items-top">
+
+                                        <div class="mb-0 flex-grow">
+
+
+                                        </div>
+                                        <div class="ml-auto">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<div class="row">
+    <div class="col-md-7 grid-margin stretch-card" >
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h4 class="card-title float-left">Age statistics</h4>
+                    <div id="visit-sale-chart-legend" class="rounded-legend legend-horizontal legend-top-right float-right"></div>
+                </div>
+                <canvas id="visit-sale-chart" class="mt-4"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Course domains</h4>
+                <canvas id="traffic-chart"></canvas>
+                <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<input  id="stat1"  value="{{st1}}" hidden>
+<input  id="stat2"  value="{{st2}}" hidden>
+<input  id="stat3" value="{{st3}}" hidden>
+<input  id="stat11"  value="{{stat1}}" hidden>
+<input  id="stat22"  value="{{stat2}}" hidden>
+<input  id="stat33" value="{{stat3}}" hidden>
+
+
+</div>
+
+
+
+
+
+                <!-- content-wrapper ends -->
+                <!-- partial:partials/_footer.html -->
+
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="{{asset('assets/vendors/chart.js/Chart.min.js')}}"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{{asset('assets/js/off-canvas.js')}}"></script>
+    <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
+    <script src="{{asset('assets/js/misc.js') }}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="{{asset('assets/js/dashboard.js')}}"></script>
+    <script src="{{asset('public/assets/js/todolist.js')}}"></script>
+    <!-- End custom js for this page -->
+    </body>
+    </html>

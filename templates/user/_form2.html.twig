@@ -1,0 +1,125 @@
+
+
+
+{{ include('cours_c/nav.html.twig') }}
+
+                <div class="page-header">
+                    <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-warning     text-white mr-2">
+                  <i class="mdi mdi-book"></i>
+                </span> Users
+                    </h3>
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                {{ form_start(form) }}
+
+
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            {% if button_label == 'Add' %}
+                            <h4 class="card-title">Add new User </h4>
+                            <p class="card-description"> Please fill all the labels </p>
+                            {% else %}
+                                <h4 class="card-title">Update user</h4>
+                                <p class="card-description"> Please fill all the labels </p>
+                               {% endif %}
+
+
+                            <div class="form-group">
+                                <label for="exampleInputName1">Username</label>
+
+                                {{ form_widget(form.nomUtilisateur,{ 'attr' : {'class' : 'form-control'}}) }}
+
+                            </div>
+                            {% if button_label == 'Add' %}
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">Password</label>
+                                {{ form_widget(form.motDePasse,{ 'attr' : {'class' : 'form-control'}}) }}
+                            </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">Name</label>
+                                {{ form_widget(form.nom,{ 'attr' : {'class' : 'form-control'}}) }}
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">Surname</label>
+                                {{ form_widget(form.prenom,{ 'attr' : {'class' : 'form-control'}}) }}
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">Age</label>
+                                {{ form_widget(form.age,{ 'attr' : {'class' : 'form-control'}}) }}
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">email</label>
+                                {{ form_widget(form.email,{ 'attr' : {'class' : 'form-control'}}) }}
+                            </div>
+                            <div class="form-group">
+                                <label>Photo link</label>
+                                <input type="file" name="img[]" class="file-upload-default">
+                                <div class="input-group col-xs-12">
+
+                                    {{ form_widget(form.img,{ 'attr' : {'class' : 'form-control file-upload-info'}}) }}
+                                    <span class="input-group-append">
+                            <button class="file-upload-browse btn btn-gradient-primary" type="button">Upload</button>
+                          </span>
+                                </div>
+                            </div>
+
+
+
+                            <button type="submit" class="btn btn-gradient-primary mr-2">{{ button_label|default('Save') }}</button>
+                            <button class="btn btn-light">Cancel</button>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+                {{ form_end(form) }}
+
+
+
+
+                <!-- content-wrapper ends -->
+                <!-- partial:partials/_footer.html -->
+
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="{{asset('assets/vendors/chart.js/Chart.min.js')}}"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{{asset('assets/js/off-canvas.js')}}"></script>
+    <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
+    <script src="{{asset('assets/js/misc.js') }}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="{{asset('assets/js/dashboard.js')}}"></script>
+    <script src="{{asset('assets/js/todolist.js')}}"></script>
+    <script src="{{asset('assets/js/file-upload.js')}}"></script>
+    <!-- End custom js for this page -->
+
+

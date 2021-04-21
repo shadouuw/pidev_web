@@ -1,0 +1,43 @@
+
+{{ include('front/nav.html.twig') }}
+
+
+
+<div class="page-banner-area">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="container">
+                    <div class="page-banner-content">
+                        <h2>Error Page</h2>
+                        <ul>
+                            <li>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>Error Page</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="error-area ptb-100">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="container">
+                    <div class="error-content">
+                        <img src="{{asset('assets2/img/404.png')}}" alt="error">
+                        <h3>Error 404 : page not found</h3>
+                        <p>There is no test found .</p>
+                        <a href="{{ path('login') }}" class="default-btn">
+                            Go to home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{{ include('front/footer.html.twig') }}

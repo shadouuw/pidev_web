@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>NomUtilisateur</th>
+                <td>{{ user.nomUtilisateur }}</td>
+            </tr>
+            <tr>
+                <th>MotDePasse</th>
+                <td>{{ user.motDePasse }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ user.nom }}</td>
+            </tr>
+            <tr>
+                <th>Pr�nom</th>
+                <td>{{ user.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Age</th>
+                <td>{{ user.age }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Moyenne</th>
+                <td>{{ user.moyenne }}</td>
+            </tr>
+            <tr>
+                <th>Salaire</th>
+                <td>{{ user.salaire }}</td>
+            </tr>
+            <tr>
+                <th>Role</th>
+                <td>{{ user.role }}</td>
+            </tr>
+            <tr>
+                <th>Metier</th>
+                <td>{{ user.metier }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ user.status }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ user.code }}</td>
+            </tr>
+            <tr>
+                <th>IdClass</th>
+                <td>{{ user.idClass }}</td>
+            </tr>
+            <tr>
+                <th>Img</th>
+                <td>{{ user.img }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_index') }}">back to list</a>
+
+    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+
+
+{% endblock %}

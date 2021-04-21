@@ -1,0 +1,255 @@
+
+
+{{ include('front/nav.html.twig') }}
+
+
+
+{% set t =  0 %}
+
+
+{% for t1 in tests %}
+    {% set t = t1 %}
+{% endfor %}
+
+<section class="register-area ptb-50">
+    <div class="container">
+
+        <div class="register-form">
+            {{ form_start(form) }}
+            <h2>Your test : </h2>
+
+                <div class="form-group">
+                    <label>{{ t.question1 }}</label>
+
+                    {{ form_widget(form.reponse1,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label>{{ t.question2 }}</label>
+                    {{ form_widget(form.reponse2,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label>{{ t.question3 }}</label>
+                    {{ form_widget(form.reponse3,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label>{{ t.question4 }}</label>
+                    {{ form_widget(form.reponse4,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    <label>{{ t.question5 }}</label>
+                    {{ form_widget(form.reponse5,{ 'attr' : {'class' : 'form-control'}}) }}
+                </div>
+                <button type="submit">{{ button_label|default('Save') }}</button>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+<section class="footer-area pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-footer-widget">
+                    <div class="logo">
+                        <h2>
+                            <a href="index.html">Ketan</a>
+                        </h2>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <ul class="social">
+                        <li>
+                            <a href="#" target="_blank">
+                                <i class='bx bxl-facebook'></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank">
+                                <i class='bx bxl-twitter'></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank">
+                                <i class='bx bxl-pinterest-alt'></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank">
+                                <i class='bx bxl-linkedin'></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-footer-widget">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-contact-info">
+                        <li>
+                            <i class='bx bxs-phone'></i>
+                            <span>Phone</span>
+                            <a href="tel:882569756">882-569-756</a>
+                        </li>
+                        <li>
+                            <i class='bx bx-envelope'></i>
+                            <span>Email</span>
+                            <a href="https://templates.envytheme.com/cdn-cgi/l/email-protection#ff979a939390bf949a8b9e91d19c9092"><span class="__cf_email__" data-cfemail="e8808d848487a8838d9c8986c68b8785">[email&#160;protected]</span></a>
+                        </li>
+                        <li>
+                            <i class='bx bx-map'></i>
+                            <span>Address</span>
+                            175 5th Ave Premium Area, New York, NY 10010, United States
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-footer-widget pl-5">
+                    <h3>Activities</h3>
+                    <ul class="quick-links">
+                        <li>
+                            <a href="#">Maths Olympiad</a>
+                        </li>
+                        <li>
+                            <a href="#">Art Competition</a>
+                        </li>
+                        <li>
+                            <a href="#">English Novels</a>
+                        </li>
+                        <li>
+                            <a href="#">Science Competition</a>
+                        </li>
+                        <li>
+                            <a href="#">Teachers Day</a>
+                        </li>
+                        <li>
+                            <a href="#">World Kids Day</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-footer-widget">
+                    <h3>Photo Gallery</h3>
+                    <ul class="photo-gallery-list">
+                        <li>
+                            <div class="box">
+                                <img src="{{asset('assets2/img/footer-gallery/footer-gallery-1.jpg')}}" alt="image">
+                                <a href="#" target="_blank" class="link-btn"></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box">
+                                <img src="{{asset('assets2/img/footer-gallery/footer-gallery-2.jpg')}}" alt="image">
+                                <a href="#" target="_blank" class="link-btn"></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box">
+                                <img src="{{asset('assets2/img/footer-gallery/footer-gallery-3.jpg')}}" alt="image">
+                                <a href="#" target="_blank" class="link-btn"></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box">
+                                <img src="{{asset('assets2/img/footer-gallery/footer-gallery-4.jpg')}}" alt="image">
+                                <a href="#" target="_blank" class="link-btn"></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box">
+                                <img src="{{asset('assets2/img/footer-gallery/footer-gallery-5.jpg')}}" alt="image">
+                                <a href="#" target="_blank" class="link-btn"></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box">
+                                <img src="{{asset('assets2/img/footer-gallery/footer-gallery-6.jpg')}}" alt="image">
+                                <a href="#" target="_blank" class="link-btn"></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box">
+                                <img src="{{asset('assets2/img/footer-gallery/footer-gallery-1.jpg')}}" alt="image">
+                                <a href="#" target="_blank" class="link-btn"></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box">
+                                <img src="{{asset('assets2/img/footer-gallery/footer-gallery-2.jpg')}}" alt="image">
+                                <a href="#" target="_blank" class="link-btn"></a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="box">
+                                <img src="{{asset('assets2/img/footer-gallery/footer-gallery-3.jpg')}}" alt="image">
+                                <a href="#" target="_blank" class="link-btn"></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="copyright-area">
+    <div class="container">
+        <div class="copyright-area-content">
+            <p>
+                Copyright © 2021 Ketan. All Rights Reserved by
+                <a href="https://envytheme.com/" target="_blank">
+                    EnvyTheme
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="go-top">
+    <i class='bx bx-up-arrow-alt'></i>
+</div>
+
+
+<script src="{{asset('assets2/js/jquery.min.js')}}"></script>
+
+<script src="{{asset('assets2/js/popper.min.js')}}"></script>
+
+<script src="{{asset('assets2/js/bootstrap.min.js')}}"></script>
+
+<script src="{{asset('assets2/js/jquery.meanmenu.js')}}"></script>
+
+<script src="{{asset('assets2/js/owl.carousel.min.js')}}"></script>
+
+<script src="{{asset('assets2/js/jquery.magnific-popup.min.js')}}"></script>
+
+<script src="{{asset('assets2/js/imagelightbox.min.js') }}"></script>
+
+<script src="{{asset('assets2/js/odometer.min.js')}}"></script>
+
+<script src="{{asset('assets2/js/jquery.appear.min.js')}}"></script>
+
+<script src="{{asset('assets2/js/jquery.ajaxchimp.min.js')}}"></script>
+
+<script src="{{asset('assets2/js/form-validator.min.js')}}"></script>
+
+<script src="{{asset('assets2/js/contact-form-script.js')}}"></script>
+
+<script src="{{asset('assets2/js/main.js')}}"></script>
+</body>
+
+<!-- Mirrored from templates.envytheme.com/ketan/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 22 Feb 2021 11:21:26 GMT -->
+</html>
+
