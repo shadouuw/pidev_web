@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Jeux{% endblock %}
+{% block title %}Edit Stages{% endblock %}
 
 {% block body %}
-    <h1>Edit Jeux</h1>
+    <h1>Edit Stages</h1>
 
-    {{ include('jeux/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('stages/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('jeux_index') }}">back to list</a>
+    <a href="{{ path('stages_index') }}">back to list</a>
 
 
 {% endblock %}

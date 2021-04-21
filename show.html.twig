@@ -1,47 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Jeux{% endblock %}
+{% block title %}Stages{% endblock %}
 
 {% block body %}
-    <h1>Jeux</h1>
+    <h1>Stages</h1>
 
     <table class="table">
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ jeux.id }}</td>
+                <td>{{ stage.id }}</td>
             </tr>
             <tr>
-                <th>Titre</th>
-                <td>{{ jeux.titre }}</td>
+                <th>Numero</th>
+                <td>{{ stage.numero }}</td>
             </tr>
             <tr>
-                <th>Description</th>
-                <td>{{ jeux.description }}</td>
+                <th>Texte</th>
+                <td>{{ stage.texte }}</td>
             </tr>
             <tr>
-                <th>Topscore</th>
-                <td>{{ jeux.topscore }}</td>
+                <th>Essai</th>
+                <td>{{ stage.essai }}</td>
             </tr>
             <tr>
-                <th>Cours</th>
-                <td>{{ jeux.cours }}</td>
-            </tr>
-            <tr>
-                <th>Diff</th>
-                <td>{{ jeux.diff }}</td>
+                <th>Correction</th>
+                <td>{{ stage.correction }}</td>
             </tr>
             <tr>
                 <th>Source</th>
-                <td>{{ jeux.source }}</td>
+                <td>{{ stage.source }}</td>
             </tr>
-
+            <tr>
+                <th>Temps</th>
+                <td>{{ stage.temps }}</td>
+            </tr>
+            <tr>
+                <th>Jeu</th>
+                <td>{{ stage.jeu }}</td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('jeux_index') }}">back to list</a>
+    <a href="{{ path('stages_index') }}">back to list</a>
 
-    <a href="{{ path('jeux_edit', {'id': jeux.id}) }}">edit</a>
+    <a href="{{ path('stages_edit', {'id': stage.id}) }}">edit</a>
 
-    {{ include('jeux/_delete_form.html.twig') }}
+    {{ include('stages/_delete_form.html.twig') }}
 {% endblock %}

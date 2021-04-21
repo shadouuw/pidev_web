@@ -1,6 +1,6 @@
 
 
-{% block title %}Cours index{% endblock %}
+{% block title %}Stage index{% endblock %}
 {% block body %}
 
 
@@ -214,7 +214,7 @@
                     <div class="collapse" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item"> <a class="nav-link" href="{{ path('jeux_index') }}">Mini-games</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="{{ path('stages_index') }}">Stages</a></li>
+                            <li class="nav-item"> <a class="nav-link"  href="{{ path('stages_index') }}">Stages</a></li>
                         </ul>
                     </div>
                 </li>
@@ -237,12 +237,12 @@
                     <h3 class="page-title">
                 <span class="page-title-icon bg-gradient-warning     text-white mr-2">
                   <i class="mdi mdi-book"></i>
-                </span> Mini-Game
+                </span> Stages
                     </h3>
                     <nav aria-label="breadcrumb">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item active" aria-current="page">
-                                <span></span><a href="{{ path('jeux_index') }}">mini-games</a><i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                                <span></span><a href="{{ path('stages_index') }}">Stages</a><i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
                             </li>
                         </ul>
                     </nav>
@@ -254,24 +254,44 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Add new Mini-Game </h4>
+                            <h4 class="card-title">Add new Stage </h4>
                             <p class="card-description"> Please fill all the labels </p>
 
                             <div class="form-group">
-                                <label for="exampleInputName1"> Mini-Game title</label>
+                                <label for="exampleInputName1"> Numero</label>
 
-                                {{ form_widget(form.titre,{ 'attr' : {'class' : 'form-control'}}) }}
+                                {{ form_widget(form.numero,{ 'attr' : {'class' : 'form-control'}}) }}
 
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail3">Description</label>
-                                {{ form_widget(form.description,{ 'attr' : {'class' : 'form-control'}}) }}
+                                <label for="exampleInputEmail3">Texte</label>
+                                {{ form_widget(form.texte,{ 'attr' : {'class' : 'form-control'}}) }}
                             </div>
 
                             <div class="form-group">
-                                <label for="exampleInputName4">Topscore</label>
+                                <label for="exampleInputName4">Essai</label>
 
-                                {{ form_widget(form.topscore,{ 'attr' : {'class' : 'form-control'}}) }}
+                                {{ form_widget(form.essai,{ 'attr' : {'class' : 'form-control'}}) }}
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputName4">Correction</label>
+
+                                {{ form_widget(form.correction,{ 'attr' : {'class' : 'form-control'}}) }}
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputName4">Temps</label>
+
+                                {{ form_widget(form.temps,{ 'attr' : {'class' : 'form-control'}}) }}
+
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputName4">Jeu</label>
+
+                                {{ form_widget(form.jeu,{ 'attr' : {'class' : 'form-control'}}) }}
 
                             </div>
 
@@ -280,24 +300,13 @@
 
 
 
-                                    {{ form_widget(form.imageFile) }}
+                                {{ form_widget(form.imageFile) }}
 
 
                                 <div class="input-group col-xs-12">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputName4"> Difficulty</label>
 
-                                {{ form_widget(form.diff,{ 'attr' : {'class' : 'form-control'}}) }}
 
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputName4"> Course related to the Mini-Game</label>
-
-                                {{ form_widget(form.cours,{ 'attr' : {'class' : 'form-control'}}) }}
-
-                            </div>
 
                             <button type="submit" class="btn btn-gradient-primary mr-2">{{ button_label|default('Save') }}</button>
                             <button class="btn btn-light">Cancel</button>

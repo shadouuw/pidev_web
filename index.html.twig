@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title %}Jeux index{% endblock %}
+{% block title %}Stage index{% endblock %}
 
 {% block body %}
 
@@ -244,13 +244,9 @@
                         </nav>
                     </div>
 
-
-
-
                     <div class="col-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-body">
-
 
                     <div class="row">
                         <div class="col-md-4 stretch-card grid-margin">
@@ -259,79 +255,74 @@
                                     <img src="{{asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
                                     <h4 class="font-weight-normal mb-3" >Total Mini-Games <i class="mdi mdi-chart-line mdi-24px float-right"></i>
                                     </h4>
-                                    <h2 class="mb-5">{{ totalmg }}</h2>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 stretch-card grid-margin">
-                            <div class="card bg-gradient-info card-img-holder text-white">
-                                <div class="card-body">
-                                    <img src="{{asset('assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
-                                    <h4 class="font-weight-normal mb-3">Total Courses Treated <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
-                                    </h4>
-                                    <h2 class="mb-5" >{{ totalcours }}</h2>
-
+                                    <h2 class="mb-5">{{ totalstages }}</h2>
 
                                 </div>
                             </div>
                         </div>
 
 
-
-                        <div class="col-12 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-
-                        <h1>Mini-Games</h1>
+                    </div>
 
 
+
+
+
+                    <h1>Stage</h1>
                     <i class="input-group-text border-0 mdi mdi-magnify">
-                        <input type="text" id="recherche" class="form-control bg-transparent border-0">
-                        <a href="{{ path('jeux_new') }}">
+                    <input type="text" id="recherche" class="form-control bg-transparent border-0">
+                        <a href="{{ path('stages_new') }}">
                             <button  type="button" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn" style="float: right">
-                                +Add Mini-game</button>
+                                +Add Stage</button>
                         </a>
                     </i>
                     </br></br>
-                    <a  id="downjeux" href="#" style="padding-right: 20px"> Sort down</button> </a>
+                    <a  id="downstage" href="#" style="padding-right: 20px"> Sort down</button> </a>
 
-                    <a  id="upjeux" href="#">Sort up</a>
-
-
+                    <a  id="upstage" href="#">Sort up</a>
+                    <div class="table-responsive">
                         <table class="table" id="t">
                             <thead>
                             <tr>
 
-                                <th>Id</th> <th><a>Title</a></th>   <th>Description</th>  <th>Topscore</th>
-                                <th>Cours</th>  <th>Diff</th>       <th>Source</th>
+                                <th>Id</th>
+                                <th>Numero</th>
+                                <th>Texte</th>
+                                <th>Essai</th>
+                                <th>Correction</th>
+                                <th>Source</th>
+                                <th>Temps</th>
+                                <th>Jeu</th>
+                                <th></th>
+
+
+
                             </tr>
                             </thead>
                             <tbody id="all">
-
-                            {% for jeu in jeuxes %}
-                            <tr>
-
-                                <td>{{ jeu.id }}</td>
-                                    <td>{{ jeu.titre }}</td>
-                                <td>{{ jeu.description }}</td>
-                                <td>{{ jeu.topscore }}</td>
-                                <td>{{ jeu.cours }}</td>
-                                <td>{{ jeu.diff }}</td>
-                               <td><img src="{{ vich_uploader_asset(jeu,'imageFile') }}" alt=""></td>
-
-                                <td><a href="{{ path('jeux_edit', {'id': jeu.id}) }}"  class="btn btn-gradient-success btn-rounded btn-fw">edit</a></td>
-                                <td> {{ include('jeux/_delete_form.html.twig') }}</td>
-                            </tr>
+                            {% for stage in stages %}
+                                <tr>
+                                    <td>{{ stage.id }}</td>
+                                    <td>{{ stage.numero }}</td>
+                                    <td>{{ stage.texte }}</td>
+                                    <td>{{ stage.essai }}</td>
+                                    <td>{{ stage.correction }}</td>
+                                    <td><img src="{{ vich_uploader_asset(stage,'imageFile') }}" alt=""></td>
+                                    <td>{{ stage.temps }}</td>
+                                    <td>{{ stage.jeu }}</td>
+                                    <td>
+                                    <td><a href="{{ path('stages_edit', {'id': stage.id}) }}"  class="btn btn-gradient-success btn-rounded btn-fw">edit</a></td>
+                                    <td> {{ include('stages/_delete_form.html.twig') }}</td>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="9">no records found</td>
+                                </tr>
                             {% endfor %}
-
                             </tbody>
                             <tbody id="search"></tbody>
                         </table>
-                    <a href="{{ path('jeux_new') }}">
-                    <button  type="button" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn" style="alignment:right">
-                         Add Mini-Game</button>
-                    </a>
 
 
 
@@ -340,62 +331,56 @@
 
 
 
-                <footer class="footer">
-                    <div class="container-fluid clearfix">
-                        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates </a> from Bootstrapdash.com</span>
+
+                        <footer class="footer">
+                            <div class="container-fluid clearfix">
+                                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+                                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates </a> from Bootstrapdash.com</span>
+                            </div>
+                        </footer>
+                        <!-- partial -->
                     </div>
-                </footer>
-                <!-- partial -->
+                    <!-- main-panel ends -->
+                </div>
+                <!-- page-body-wrapper ends -->
             </div>
-            <!-- main-panel ends -->
-        </div>
-        <!-- page-body-wrapper ends -->
-    </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="{{asset('assets/vendors/chart.js/Chart.min.js')}}"></script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="{{asset('assets/js/off-canvas.js')}}"></script>
-    <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
-    <script src="{{asset('assets/js/misc.js') }}"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <script src="{{asset('assets/js/dashboard.js')}}"></script>
-    <script src="{{asset('public/assets/js/todolist.js')}}"></script>
-    <!-- End custom js for this page -->
+            <!-- container-scroller -->
+            <!-- plugins:js -->
+            <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
+            <!-- endinject -->
+            <!-- Plugin js for this page -->
+            <script src="{{asset('assets/vendors/chart.js/Chart.min.js')}}"></script>
+            <!-- End plugin js for this page -->
+            <!-- inject:js -->
+            <script src="{{asset('assets/js/off-canvas.js')}}"></script>
+            <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
+            <script src="{{asset('assets/js/misc.js') }}"></script>
+            <!-- endinject -->
+            <!-- Custom js for this page -->
+            <script src="{{asset('assets/js/dashboard.js')}}"></script>
+            <script src="{{asset('public/assets/js/todolist.js')}}"></script>
+            <!-- End custom js for this page -->
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" > </script>
 
 
-
-
-
-
-
-
-
     <script>
         $( document ).ready(function() {
 
-            $("#upjeux").click(function(e){
+            $("#upstage").click(function(e){
                 /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
-                var value = "upjeux";
+                var value = "upstage";
                 /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
                 $.ajax({
                     /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
-                    url : "{{ path('jeux_indexu') }}",
+                    url : "{{ path('stages_indexu') }}",
                     /* La méthode utilisée pour transférer les données est GET */
                     type : 'GET',
                     /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
                     data: {
-                        'titre' : value
+                        'jeu' : value
 
                     },
                     /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
@@ -405,7 +390,7 @@
                             $.each(JSON.parse(retour), function(i, obj) {
                                 $('#all').hide();
 
-                                $('#search').append('<tr><td> '+obj[0].id+'  </td><td>    '+obj[0].titre+'  </td><td>'+obj[0].description+' </td> <td>'+obj[0].topscore+' </td><td>'+obj.nomCours+' </td><td>'+obj[0].diff+' </td>    <td><img src="/uploads/images/products/'+obj[0].source+'" alt=""></td> <td><a href="/jeux/'+obj[0].id+'/edit" class="btn btn-gradient-success btn-rounded btn-fw">edit</a> </td><td><a href="/jeux/'+obj[0].id+'" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn">delete</a></td></tr>');
+                                $('#search').append('<tr><td> '+obj[0].id+'  </td><td>    '+obj[0].numero+'  </td><td>'+obj[0].texte+' </td> <td>'+obj[0].essai+' </td><td>'+obj[0].correction+' </td>   <td><img src="/uploads/images/products/'+obj[0].source+'" alt=""></td> <td>'+obj[0].temps+' </td>  <td>'+obj.titre+' </td>  <td><a href="/stages/'+obj[0].id+'/edit" class="btn btn-gradient-success btn-rounded btn-fw">edit</a> </td><td><a href="/stages/'+obj[0].id+'" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn">delete</a></td></tr>');
                             });
 
                         }
@@ -422,18 +407,18 @@
 
 
 
-            $("#downjeux").click(function(e){
+            $("#downstage").click(function(e){
                 /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
-                var value = "downjeux";
+                var value = "downstage";
                 /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
                 $.ajax({
                     /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
-                    url : "{{ path('jeux_indexu') }}",
+                    url : "{{ path('stages_indexu') }}",
                     /* La méthode utilisée pour transférer les données est GET */
                     type : 'GET',
                     /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
                     data: {
-                        'titre' : value
+                        'jeu' : value
 
                     },
                     /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
@@ -443,7 +428,7 @@
                             $.each(JSON.parse(retour), function(i, obj) {
                                 $('#all').hide();
 
-                                $('#search').append('<tr><td> '+obj[0].id+'  </td><td>    '+obj[0].titre+'  </td><td>'+obj[0].description+' </td> <td>'+obj[0].topscore+' </td><td>'+obj.nomCours+' </td><td>'+obj[0].diff+' </td>    <td><img src="/uploads/images/products/'+obj[0].source+'" alt=""></td> <td><a href="/jeux/'+obj[0].id+'/edit" class="btn btn-gradient-success btn-rounded btn-fw">edit</a> </td><td><a href="/jeux/'+obj[0].id+'" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn">delete</a></td></tr>');
+                                $('#search').append('<tr><td> '+obj[0].id+'  </td><td>    '+obj[0].numero+'  </td><td>'+obj[0].texte+' </td> <td>'+obj[0].essai+' </td><td>'+obj[0].correction+' </td>   <td><img src="/uploads/images/products/'+obj[0].source+'" alt=""></td> <td>'+obj[0].temps+' </td>  <td>'+obj.titre+' </td>  <td><a href="/stages/'+obj[0].id+'/edit" class="btn btn-gradient-success btn-rounded btn-fw">edit</a> </td><td><a href="/stages/'+obj[0].id+'" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn">delete</a></td></tr>');
                             });
 
                         }
@@ -457,9 +442,6 @@
                 });
                 return false;
             });
-
-
-
 
 
 
@@ -469,38 +451,38 @@
                 /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
                 var value =$("#recherche").val();
                 /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
-                if(value.length >= 2   ){
-                $.ajax({
-                    /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
-                    url : "{{ path('jeux_indexu') }}",
-                    /* La méthode utilisée pour transférer les données est GET */
-                    type : 'GET',
-                    /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
-                    data: {
-                        'titre' : value
 
-                    },
-                    /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
-                    success : function(retour){
-                        if(retour){
-                            $('#search').empty();
-                            $.each(JSON.parse(retour), function(i, obj) {
-                                $('#all').hide();
+                    $.ajax({
+                        /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                        url : "{{ path('stages_indexu') }}",
+                        /* La méthode utilisée pour transférer les données est GET */
+                        type : 'GET',
+                        /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                        data: {
+                            'jeu' : value
 
-                                $('#search').append('<tr><td> '+obj[0].id+'  </td><td>    '+obj[0].titre+'  </td><td>'+obj[0].description+' </td> <td>'+obj[0].topscore+' </td><td>'+obj.nomCours+' </td><td>'+obj[0].diff+' </td>    <td><img src="/uploads/images/products/'+obj[0].source+'" alt=""></td> <td><a href="/jeux/'+obj[0].id+'/edit" class="btn btn-gradient-success btn-rounded btn-fw">edit</a> </td><td><a href="/jeux/'+obj[0].id+'" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn">delete</a></td></tr>');
-                            });
+                        },
+                        /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                        success : function(retour){
+                            if(retour){
+                                $('#search').empty();
+                                $.each(JSON.parse(retour), function(i, obj) {
+                                    $('#all').hide();
 
-                        }
-                        else
-                        {
-                            $('#all').show();
-                            $('#search').empty();
-                            $('#search').fadeIn('fast');
-                        }
-                    },
-                });
-                return false;
-                }
+                                    $('#search').append('<tr><td> '+obj[0].id+'  </td><td>    '+obj[0].numero+'  </td><td>'+obj[0].texte+' </td> <td>'+obj[0].essai+' </td><td>'+obj[0].correction+' </td>   <td><img src="/uploads/images/products/'+obj[0].source+'" alt=""></td> <td>'+obj[0].temps+' </td>  <td>'+obj.titre+' </td>  <td><a href="/stages/'+obj[0].id+'/edit" class="btn btn-gradient-success btn-rounded btn-fw">edit</a> </td><td><a href="/stages/'+obj[0].id+'" class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn">delete</a></td></tr>');
+                                });
+
+                            }
+                            else
+                            {
+                                $('#all').show();
+                                $('#search').empty();
+                                $('#search').fadeIn('fast');
+                            }
+                        },
+                    });
+                    return false;
+
             });
 
 
