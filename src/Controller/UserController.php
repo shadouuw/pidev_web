@@ -66,15 +66,17 @@ class UserController extends AbstractController
         $errors = $validator->validate($user);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
             echo $user->getPassword();
+            $user->setToken($user->getPassword());
             $password=$this->encoder->encodePassword($user,$user->getPassword());
 
             $user->setMotDePasse($password);
-
+ $user->setRole(0);
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('user/new.html.twig', [
@@ -100,6 +102,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             echo $user->getPassword();
+            $user->setToken($user->getPassword());
             $password=$this->encoder->encodePassword($user,$user->getPassword());
 
             $user->setMotDePasse($password);
@@ -163,6 +166,35 @@ class UserController extends AbstractController
     }
 
 
+    /**
+     * @Route("/{id}/block", name="user_block", methods={"GET","POST"})
+     */
+    public function block(Request $request, User $user): Response
+    {
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        $user->setStatus(0);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route("/{id}/confirm", name="user_confirm", methods={"GET","POST"})
+     */
+    public function confirm(Request $request, User $user): Response
+    {
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        $user->setStatus(1);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('user_index');
+    }
 
     /**
      * @Route("/user_tri", name="user_tri", methods={"GET"})
@@ -180,6 +212,11 @@ class UserController extends AbstractController
             'img' => $this->getUser()->getImg()
         ]);
     }
+
+
+
+
+
 
 
 }

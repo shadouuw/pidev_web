@@ -2,11 +2,16 @@
 
 namespace App\Controller;
 
+use App\Controller\CoursCController;
+
 use App\Entity\User;
+
+use App\Repository\CoursRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,28 +34,47 @@ class SecurityController extends AbstractController
     {
         $this->client->insulate();
     }
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout()
+    {
+
+
+    }
 
 
     /**
      * @Route("/login", name="login")
      */
-    public function login(Request $request, AuthenticationUtils $utils): Response
+    public function login(Request $request, AuthenticationUtils $utils,CoursRepository $coursRepository): Response
 
     {
-        //echo "<script> alert('hi'); </script>";
-        $session = $this->get('session');
-       $hi= $session->get('test');
-        $session->set('test','555555');
+
+
+
+        $session = new Session();
 
 
 
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
                 return $this->redirectToRoute('front_log');
-            } else {
+            } else if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
                 return $this->redirectToRoute('cours_c_index');
             }
+            else{
+
+
+echo "<script> alert('block'); </script> ";
+                return $this->redirectToRoute('logout') ;
+
+
+
+
+            }
         }
+
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->findAll();
@@ -65,6 +89,7 @@ class SecurityController extends AbstractController
             'error' => $error,
             'last_username' => $last_username,
             'user' => $user,
+
             'password' => $password=null
 
 
@@ -72,14 +97,6 @@ class SecurityController extends AbstractController
     }
 
 
-    /**
-     * @Route("/logout", name="logout")
-     */
-    public function logout()
-    {
-
-
-    }
 
 
     /**
@@ -108,7 +125,7 @@ class SecurityController extends AbstractController
 
 
 
-        $last_username=  $_GET['demo'];
+
 
         $word=$_GET['demo'];
         $qb = $userRepository->createQueryBuilder('u');

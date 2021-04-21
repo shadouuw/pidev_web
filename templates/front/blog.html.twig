@@ -1,0 +1,95 @@
+{{ include('front/nav.html.twig') }}
+
+
+
+
+
+
+
+<div class="page-banner-area">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="container">
+                <div class="page-banner-content">
+                    <h2>Blog</h2>
+                    <ul>
+                        <li>
+                            <a href="index.html">Home</a>
+                        </li>
+                        <li>Blog</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="blog-area pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+
+            {% for blog in blogs %}
+
+            <div class="col-lg-4 col-md-6">
+
+
+                <div class="single-blog-item">
+                    <div class="blog-image">
+                        <a href="#">
+                            <img src="{{ asset(blog.img) }}" alt="image">
+                        </a>
+                    </div>
+
+                    <div class="blog-content">
+                        <ul class="post-meta">
+                            <li>
+                                <span>By Admin:</span>
+                                <a href="#">{{ blog.nomAdmin }}</a>
+                            </li>
+                            <li>
+                                <span>Date:</span>
+                                {{ blog.datePostule ? blog.datePostule|date('Y-m-d') : '' }}
+                            </li>
+                        </ul>
+                        <h3>
+                            <a href="blog-details.html">{{ blog.nom }}</a>
+                        </h3>
+                        <p>{{ blog.description }}<</p>
+                        <div class="blog-btn">
+                            <a href="{{ path('blog_detail', {'id': blog.id}) }}" class="default-btn">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+{% endfor %}
+
+
+
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{ include('front/footer.html.twig') }}
