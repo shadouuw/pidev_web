@@ -195,22 +195,26 @@
         </div>
     </div>
 </div>
-
+{% set e = "" %}
+{% for error in errors  %}
+    {%  set e =  error.message %}
+{% endfor %}
 
 <button class="btn"></button>
 
 <section class="register-area ptb-50">
     <div class="container">
-        <div class="register-form">
-            <h2>Register      {% for error in errors  %}
-                    <span class="error-content">{{  error.message }}</span>
+        <div class="register-form" >
+
+            <h2>Register
+                    <span class="error-content">{{ e }}</span>
 
 
-                {% endfor %}</h2>
+                </h2>
 
-            {{ form_start(form) }}
+                {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
 
-                <div class="form-group">
+                <div class="form-group" >
                     <label>Username</label>
                     {{ form_widget(form.nomUtilisateur,{ 'attr' : {'class' : 'form-control'}}) }}
                 </div>
@@ -231,7 +235,7 @@
                     {{ form_widget(form.age,{ 'attr' : {'class' : 'form-control'}}) }}
                 </div>
                 <div class="form-group">
-                    <label>Age</label>
+                    <label>password</label>
                     {{ form_widget(form.motDePasse,{ 'attr' : {'class' : 'form-control'}}) }}
                 </div>
                 <div  class="form-group">
@@ -270,10 +274,12 @@
             <div class="important-text">
 
             </div>
+
         </div>
     </div>
 </section>
 {{ form_end(form) }}
+
 
 <section class="footer-area pt-100 pb-70">
     <div class="container">

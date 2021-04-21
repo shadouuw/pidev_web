@@ -6,7 +6,6 @@ use App\Entity\Notification;
 use App\Entity\Test;
 use App\Entity\User;
 use App\Form\TestType;
-use App\Form\Test3Type;
 use App\Repository\TestRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -132,48 +131,6 @@ class TestController extends AbstractController
 
         return $this->render('test/edit.html.twig', [
             'test' => $test,
-            'errors'=> $errors  ,
-            'notifs' => $this->getDoctrine()
-                ->getRepository(Notification::class)
-                ->findAll(),
-            'user' => $this->getUser()->getNom(),
-            'img' => $this->getUser()->getImg(),
-            'form' => $form->createView(),
-        ]);
-    }
-    /**
-     * @Route("/{idTest}/correct", name="test_correct", methods={"GET","POST"})
-     */
-    public function correct(Request $request, Test $test,TestRepository  $testRepository): Response
-    {
-        $errors=null;
-        $t = $testRepository->createQueryBuilder('t')->select('t')->where("t.idTest = " . $test->getIdTest() . " ")->getQuery()->getSingleResult();
-        $form = $this->createForm(Test3Type::class, $test);
-        $form->handleRequest($request);
-
-        if($test ->getStatus()!=1)
-        {
-            return $this->redirectToRoute('test_index');
-        }
-
-        if ($form->isSubmitted() && $form->isValid()) {
- $test->setStatus(2);
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('test_index');
-        }
-
-
-        if($testRepository->createQueryBuilder('t')->select('count(t)')->where("t.idTest = ".$test->getIdTest()." " )->andWhere('t.note = -1')->andWhere('t.status = 1')->getQuery()->getSingleResult() != 0 ) {
-            $t = $testRepository->createQueryBuilder('t')->select('t')->where("t.idTest = " . $test->getIdTest() . " ")->getQuery()->getSingleResult();
-        }
-        else
-        {
-            return $this->redirectToRoute('test_index');
-        }
-        return $this->render('test/correct.html.twig', [
-            'test' => $test,
-            't' => $t,
             'errors'=> $errors  ,
             'notifs' => $this->getDoctrine()
                 ->getRepository(Notification::class)

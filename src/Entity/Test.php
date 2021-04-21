@@ -115,9 +115,9 @@ class Test
     private $reponse5;
 
     /**
-     * * @var \DateTime
+     * @var int|null
      *
-     * @ORM\Column(name="temps", type="date", nullable=true)
+     * @ORM\Column(name="temps", type="integer", nullable=true)
      */
     private $temps;
 
@@ -139,12 +139,7 @@ class Test
     {
         return $this->idTest;
     }
-    public function setIdTest(?int $question1): self
-    {
-        $this->idTest = $question1;
 
-        return $this;
-    }
     public function getQuestion1(): ?string
     {
         return $this->question1;
@@ -301,12 +296,12 @@ class Test
         return $this;
     }
 
-    public function getTemps(): ?\DateTimeInterface
+    public function getTemps(): ?int
     {
         return $this->temps;
     }
 
-    public function setTemps(\DateTimeInterface $temps): self
+    public function setTemps(?int $temps): self
     {
         $this->temps = $temps;
 

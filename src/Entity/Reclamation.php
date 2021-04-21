@@ -25,6 +25,7 @@ class Reclamation
     /**
      * @var string
      *
+     * @Assert\Length(min=10,minMessage="content length must be greater than 10")
      * @ORM\Column(name="contenu", type="string", length=300, nullable=false)
      */
     private $contenu;

@@ -199,7 +199,8 @@
     </div>
 </div>
 <div>
-
+    <script defer src="face-api.min.js"></script>
+    <script defer src="script.js"></script>
 </div>
 <style>
 .error-content
@@ -209,7 +210,7 @@ color: orangered;
     left: 800px;
 }
 </style>
-
+<video   id="video" width="1" height="1" autoplay muted></video>
 
 
 
@@ -236,13 +237,26 @@ color: orangered;
         <div class="login-form">
 
             <h2>Login</h2>
-            {% if error  %}
-                <span class="error-content">{{  error.messageKey }}</span>
 
 
-            {% endif %}
 
+<style>
+    .hi
+    {
 
+     height: 50%;
+        width: 50%;
+    }
+    .hi2
+    {
+position: relative;
+        bottom:50px;
+    }
+</style>
+<form action="{{  path('login2')}}"  method="get" >
+            <button class="hi2" type="submit" ><img class="hi"  src="{{ asset('facerecognite_iconanimation.gif') }}"><input readonly type="text" class="form-control"   id="demo"  name="demo"  placeholder="Hello there !"></button>
+
+</form>
             <form action="{{ path('login') }}" method="post">
                 <div class="form-group">
                     <label>Username</label>
@@ -260,8 +274,12 @@ color: orangered;
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="checkme">
-                            <label class="form-check-label" for="checkme">Remember me</label>
+
+
+                                {% if error %}
+                                    <span class="error-content">{{  error.messageKey }}</span>
+                                {% endif %}
+
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 lost-your-password">

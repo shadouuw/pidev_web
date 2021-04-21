@@ -81,6 +81,8 @@
                                             <td> {{  user.email }}</td>
                                             <td>{{ user.role }}</td>
                                                     <td> <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-gradient-success btn-rounded btn-fw">edit</a></td>
+                                            <td>   <a href="{{ path('user_confirm', {'id': user.id}) }}" class="btn btn-gradient-success btn-rounded btn-fw">Confirm</a></td>
+                                            <td> <a href="{{ path('user_block', {'id': user.id}) }}" class="btn btn-gradient-danger btn-rounded btn-fw">block</a></td>
 
                                             <td> {{ include('user/_delete_form.html.twig') }}</td>
                                         </tr>
