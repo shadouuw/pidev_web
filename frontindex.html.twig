@@ -1,0 +1,52 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Reclamation{% endblock %}
+
+{% block body %}
+
+
+                                    <h1>Nouveau message</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for chat in chats %}
+            <tr>
+                <td>{{ chat.nomUtilisateur }}</td>
+                <td>{{ chat.nom }}</td>
+                <td>{{ chat.prenom }}</td>
+
+                <td>
+                    <a href="{{ path('chat_messagedetails', {'id': chat.id}) }}">Ouvrir message</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<br>
+                                    <h1>Utilisateurs</h1>
+                                    {% for u in allusers %}
+                                    <a href="{{ path('chat_messagedetails', {'id': u.id}) }}"> {{  u.nomUtilisateur }}</a>
+                                    <br>
+                                    {% endfor %}
+
+
+{% endblock %}
+
+
+
+
+
+
+

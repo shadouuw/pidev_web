@@ -1,47 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Jeux{% endblock %}
+{% block title %}Reclamation{% endblock %}
 
 {% block body %}
-    <h1>Jeux</h1>
+    <h1>Reclamation</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ jeux.id }}</td>
+                <th>IdReclamation</th>
+                <td>{{ reclamation.idReclamation }}</td>
             </tr>
             <tr>
-                <th>Titre</th>
-                <td>{{ jeux.titre }}</td>
+                <th>Contenu</th>
+                <td>{{ reclamation.contenu }}</td>
             </tr>
             <tr>
-                <th>Description</th>
-                <td>{{ jeux.description }}</td>
+                <th>IdUtilisateur</th>
+                <td>{{ reclamation.idUtilisateur }}</td>
             </tr>
             <tr>
-                <th>Topscore</th>
-                <td>{{ jeux.topscore }}</td>
+                <th>Email</th>
+                <td>{{ reclamation.email }}</td>
             </tr>
             <tr>
-                <th>Cours</th>
-                <td>{{ jeux.cours }}</td>
+                <th>Telephone</th>
+                <td>{{ reclamation.telephone }}</td>
             </tr>
             <tr>
-                <th>Diff</th>
-                <td>{{ jeux.diff }}</td>
+                <th>Etat</th>
+                <td>{{ reclamation.etat }}</td>
             </tr>
             <tr>
-                <th>Source</th>
-                <td>{{ jeux.source }}</td>
+                <th>Type</th>
+                <td>{{ reclamation.type }}</td>
             </tr>
-
         </tbody>
     </table>
 
-    <a href="{{ path('jeux_index') }}">back to list</a>
+    <a href="{{ path('reclamation_index') }}">back to list</a>
 
-    <a href="{{ path('jeux_edit', {'id': jeux.id}) }}">edit</a>
+    <a href="{{ path('reclamation_edit', {'idReclamation': reclamation.idReclamation}) }}">edit</a>
 
-    {{ include('jeux/_delete_form.html.twig') }}
+    {{ include('reclamation/_delete_form.html.twig') }}
 {% endblock %}
