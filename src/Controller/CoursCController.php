@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Entity\Cours;
 use App\Entity\Notification;
 use App\Entity\Reclamation;
-use Symfony\Component\HttpFoundation\Session\Session;
-
 use App\Entity\User;
 use App\Form\Cours1Type;
 use App\Repository\CoursRepository;
@@ -23,24 +21,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CoursCController extends AbstractController
 {
-public static $c="1";
     /**
      * @Route("/", name="cours_c_index", methods={"GET"})
      */
     public function index(CoursRepository $coursRepository,UserRepository $userRepository,NotificationRepository  $notificationRepository): Response
     {
-
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_B'))
-        {
-
-            echo "<script> alert('Your account is blocked !') </script>";
-
-            return $this->redirectToRoute('logout');
-            }
-
         if ($this->get('security.authorization_checker')->isGranted('ROLE_USER'))
         {
-
             return $this->redirectToRoute('front');
         }
 
@@ -132,6 +119,7 @@ $tot=$userRepository->createQueryBuilder('c')->select('count(c)')->getQuery()->g
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+
             return $this->redirectToRoute('link_cours');
         }
 
@@ -160,6 +148,23 @@ $tot=$userRepository->createQueryBuilder('c')->select('count(c)')->getQuery()->g
 
         return $this->redirectToRoute('link_cours');
     }
+    /**
+     * @Route("/search_cours", name="search_cours")
+     */
+    public function search(Request $request, CoursRepository $coursRepository): Response
+    {
+        $nom = $_GET['nom'];
+        return $this->render('cours_c/course.html.twig', [
+            'cours' => $coursRepository->createQueryBuilder('u')->select('u')->where("u.nomCours = '".$nom."' ")->getQuery()->getResult(),
+            'img' => $this->getUser()->getImg(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
+            'user' =>  $user = $this->getUser()->getNom()
+
+
+        ]);
+    }
 
     /**
          * @Route("/link_cours" ,name="link_cours", methods={"GET"})
@@ -172,7 +177,10 @@ $tot=$userRepository->createQueryBuilder('c')->select('count(c)')->getQuery()->g
             'notifs' => $this->getDoctrine()
                 ->getRepository(Notification::class)
                 ->findAll(),
-            'user' =>  $user = $this->getUser()->getNom()
+            'user' =>  $user = $this->getUser()->getNom(),
+            'users'=> $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findAll(),
 
         ]);
     }

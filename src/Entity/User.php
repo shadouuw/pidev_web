@@ -23,10 +23,9 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="nom_utilisateur", type="string", length=15, nullable=false)
-     * @Assert\NotNull(message="username is empty ")
+     * @ORM\Column(name="nom_utilisateur", type="string", length=15, nullable=true)
      */
 
 
@@ -101,7 +100,7 @@ class User implements UserInterface
     private $metier = 'to_update';
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="token", type="string", length=50, nullable=false, options={"default"="to_update"})
      */
@@ -136,15 +135,10 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        if ($this->status == 1) {
-            if ($this->role == 0) {
-                return ['ROLE_USER'];
-            } else if ($this->role == 3) {
-                return ['ROLE_ADMIN'];
-            }
-        } else {
-
-            return ['ROLE_B'];
+        if ($this->role == 0) {
+            return ['ROLE_USER'];
+        } else if ($this->role == 3) {
+            return ['ROLE_ADMIN'];
         }
     }
 

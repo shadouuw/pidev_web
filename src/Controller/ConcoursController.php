@@ -137,7 +137,7 @@ $errors=null;
     public function search(Request $request,ConcoursRepository $concoursRepository): Response
     {
         $nom = $_GET['nom'];
-        return $this->render('blog/index.html.twig', [
+        return $this->render('concours/index.html.twig', [
             'concours' => $concoursRepository->createQueryBuilder('u')->select('u')->where("u.nomConcours   = '".$nom."' ")->getQuery()->getResult(),
             'img' => $this->getUser()->getImg(),
             'notifs' => $this->getDoctrine()

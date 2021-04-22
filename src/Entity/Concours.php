@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use  Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,7 +24,8 @@ class Concours
 
     /**
      * @var string
-     *
+     *  @Assert\Length(min=10,minMessage="name length must be greater than 10 ")
+     * @Assert\NotNull(message="name is empty ")
      * @ORM\Column(name="nom_concours", type="string", length=60, nullable=false)
      */
     private $nomConcours;
@@ -55,6 +57,11 @@ class Concours
      * @ORM\Column(name="is_done", type="integer", nullable=false)
      */
     private $isDone = '0';
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $img;
 
     public function getIdConcours(): ?int
     {
@@ -117,6 +124,18 @@ class Concours
     public function setIsDone(int $isDone): self
     {
         $this->isDone = $isDone;
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(string $img): self
+    {
+        $this->img = $img;
 
         return $this;
     }

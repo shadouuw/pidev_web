@@ -199,8 +199,7 @@
     </div>
 </div>
 <div>
-    <script defer src="face-api.min.js"></script>
-    <script defer src="script.js"></script>
+
 </div>
 <style>
 .error-content
@@ -237,26 +236,12 @@ color: orangered;
         <div class="login-form">
 
             <h2>Login</h2>
+            {% if error  %}
+                <span class="error-content">{{  error.messageKey }}</span>
 
 
+            {% endif %}
 
-<style>
-    .hi
-    {
-
-     height: 50%;
-        width: 50%;
-    }
-    .hi2
-    {
-position: relative;
-        bottom:50px;
-    }
-</style>
-<form action="{{  path('login2')}}"  method="get" >
-            <button class="hi2" type="submit" ><img class="hi"  src="{{ asset('facerecognite_iconanimation.gif') }}"><input readonly type="text" class="form-control"   id="demo"  name="demo"  placeholder="Hello there !"></button>
-
-</form>
             <form action="{{ path('login') }}" method="post">
                 <div class="form-group">
                     <label>Username</label>
@@ -274,12 +259,8 @@ position: relative;
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-check">
-
-
-                                {% if error %}
-                                    <span class="error-content">{{  error.messageKey }}</span>
-                                {% endif %}
-
+                            <input type="checkbox" class="form-check-input" id="checkme">
+                            <label class="form-check-label" for="checkme">Remember me</label>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 lost-your-password">
