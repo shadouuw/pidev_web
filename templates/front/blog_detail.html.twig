@@ -1,6 +1,8 @@
 {{ include('front/nav.html.twig') }}
-
-
+<link href="{{ asset('font-awesome.min.css') }}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/starrating/css/rating.css') }}" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="{{ asset('bundles/starrating/js/rating.js') }}"></script>
 
 <div class="page-banner-area item-bg3">
     <div class="d-table">
@@ -79,6 +81,7 @@
                                     </div>
                                     <div class="comment-metadata">
                                         <a href="#">
+
                                             <span>{{ c.date ? c.date|date('Y-m-d') : '' }}</span>
                                         </a>
                                     </div>
@@ -86,8 +89,8 @@
                                 <div class="comment-content">
                                     <p>{{ c.contenu }}</p>
                                 </div>
-                                <div class="reply">
-                                    <a href="#" class="comment-reply-link">Reply</a>
+                                <div >
+                                    {{ c.rating | rating }}
                                 </div>
                             </div>
                             {% endfor %}
@@ -104,10 +107,16 @@
                             </p>
 
                             <p class="comment-form-comment">
-                                <label>Comment</label>
+
+                                <span id="email-notes">Comment</span>
+
                                 {{ form_widget(form.contenu,{ 'attr' : {'class' : 'form-control'}}) }}
                             </p>
+                        <p class="comment-form-comment" >
+                            <span id="email-notes">Your rating</span>
 
+                            {{ form_widget(form.rating ,{ 'attr' : {'class' : 'rating'}}) }}
+                        </p>
                             <p class="form-submit">
                                 <input type="submit" name="submit" id="submit" class="submit" value="Post A Comment">
                             </p>

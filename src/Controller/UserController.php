@@ -5,8 +5,12 @@ namespace App\Controller;
 use App\Entity\Notification;
 use App\Entity\User;
 use App\Form\User1Type;
+use App\Form\User2Type;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Fungio\GoogleMap\Helper\MapHelper;
+use Fungio\GoogleMap\Map;
+use Fungio\GoogleMap\MapTypeId;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +52,7 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      */
-    public function new(Request $request,ValidatorInterface $validator): Response
+    public function new(Request $request,ValidatorInterface $validator,UserRepository $userRepository): Response
     {
 
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -68,13 +72,18 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             echo $user->getPassword();
+
             $user->setToken($user->getPassword());
             $password=$this->encoder->encodePassword($user,$user->getPassword());
 
             $user->setMotDePasse($password);
- $user->setRole(0);
+            $user->setRole(0);
+            $user->setStatus(1);
+
+
             $entityManager->persist($user);
             $entityManager->flush();
+
 
             return $this->redirectToRoute('login');
         }
@@ -103,9 +112,12 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             echo $user->getPassword();
             $user->setToken($user->getPassword());
+            $user->setToken($user->getPassword());
             $password=$this->encoder->encodePassword($user,$user->getPassword());
 
             $user->setMotDePasse($password);
+            $user->setStatus(1);
+            $user->setRole(2);
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -144,12 +156,50 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'users' => $user,
             'user' => $this->getUser()->getNom(),
+            'img' =>$this->getUser()->getImg(),
             'notifs' => $this->getDoctrine()
                 ->getRepository(Notification::class)
                 ->findAll(),
+
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/{id}/edit2", name="user_edit2", methods={"GET","POST"})
+     */
+    public function edit2(Request $request, User $user , ValidatorInterface $validator): Response
+    {
+        $errors=null;
+        $form = $this->createForm(User2Type::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $errors = $validator->validate($user);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $password=$this->encoder->encodePassword($user,$user->getToken());
+            $user->setMotDePasse($password);
+
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('front_log');
+        }
+
+        return $this->render('user/edit2.html.twig', [
+            'users' => $user,
+            'user' => $this->getUser()->getNom(),
+            'img' =>$this->getUser()->getImg(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
+            'errors' =>$errors,
+            'id' => $this->getUser()->getId(),
+
+            'form' => $form->createView(),
+        ]);
+    }
+
 
     /**
      * @Route("/{id}", name="user_delete", methods={"POST"})
@@ -213,6 +263,76 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/{id}/map", name="user_map", methods={"GET","POST"})
+     */
+    public function map(Request $request, User $user): Response
+    {
+        $form = $this->createForm(User1Type::class, $user);
+        $form->handleRequest($request);
+        $address=$user->getAdresse();
+
+        $geocode = file_get_contents('http://maps.google.com/maps/api/geocode/json?address='.$address.'&sensor=false');
+
+        $output= json_decode($geocode);
+        if($output->status == "OK") {
+            $lat = $output->results[0]->geometry->location->lat;
+            $long = $output->results[0]->geometry->location->lng;
+
+        }
+        else
+        {
+            $lat=36;
+            $long=10;
+        }
+
+        $map = new Map();
+
+        $map->setPrefixJavascriptVariable('map_');
+        $map->setHtmlContainerId('map_canvas');
+
+        $map->setAsync(false);
+        $map->setAutoZoom(false);
+
+        $map->setCenter( $lat ,$long, true);
+        $map->setMapOption('zoom', 11);
+
+        $map->setBound(-2.1, -3.9, 2.6, 1.4, true, true);
+
+        $map->setMapOption('mapTypeId', MapTypeId::ROADMAP);
+        $map->setMapOption('mapTypeId', 'roadmap');
+
+        $map->setMapOption('disableDefaultUI', true);
+        $map->setMapOption('disableDoubleClickZoom', true);
+        $map->setMapOptions(array(
+            'disableDefaultUI'       => true,
+            'disableDoubleClickZoom' => true,
+        ));
+
+        $map->setStylesheetOption('width', '700px');
+        $map->setStylesheetOption('height', '700px');
+        $map->setStylesheetOptions(array(
+            'width'  => '1000px',
+            'height' => '1000px',
+        ));
+
+        $map->setLanguage('en');
+
+        $mapHelper = new MapHelper();
+
+
+        return $this->render('user/map.html.twig', [
+            'users' => $user,
+            'adresse' => $address,
+            'user' => $this->getUser()->getNom(),
+            'img' =>$this->getUser()->getImg(),
+            'map' =>  $mapHelper->render($map),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
+
+        ]);
+    }
 
 
 

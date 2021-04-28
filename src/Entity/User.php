@@ -23,10 +23,9 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="nom_utilisateur", type="string", length=15, nullable=false)
-     * @Assert\NotNull(message="username is empty ")
+     * @ORM\Column(name="nom_utilisateur", type="string", length=15, nullable=true)
      */
 
 
@@ -101,7 +100,7 @@ class User implements UserInterface
     private $metier = 'to_update';
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="token", type="string", length=50, nullable=false, options={"default"="to_update"})
      */
@@ -131,6 +130,11 @@ class User implements UserInterface
      */
     private $img;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+
 
 
 
@@ -139,7 +143,13 @@ class User implements UserInterface
         if ($this->status == 1) {
             if ($this->role == 0) {
                 return ['ROLE_USER'];
-            } else if ($this->role == 3) {
+
+            }
+            else if($this->role == 2)
+            {
+                return ['ROLE_ADMIN'];
+            }
+            else if ($this->role == 3) {
                 return ['ROLE_ADMIN'];
             }
         } else {
@@ -233,14 +243,14 @@ class User implements UserInterface
 
         return $this;
     }
-    public function getToken(): ?int
+    public function getToken(): ?string
     {
-        return $this->age;
+        return $this->token;
     }
 
-    public function setToken(?int $age): self
+    public function setToken(?string $age): self
     {
-        $this->age = $age;
+        $this->token = $age;
 
         return $this;
     }
@@ -338,6 +348,18 @@ class User implements UserInterface
     public function setImg(string $img): self
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

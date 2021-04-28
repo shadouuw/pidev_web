@@ -107,4 +107,52 @@ class ReclamationController extends AbstractController
 
         return $this->redirectToRoute('reclamation_index');
     }
+    /**
+     * @Route("/{id}", name="reclamation_detail", methods={"GET"})
+     */
+    public function show(Reclamation $reclamation): Response
+    {
+        return $this->render('reclamation/detail.html.twig', [
+            'reclamation' => $reclamation,
+            'img' => $this->getUser()->getImg(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
+            'user' => $user = $this->getUser()->getNom()
+        ]);
+    }
+    /**
+     * @Route("/send", name="reclamation_send", methods={"GET","POST"})
+     */
+    public function send(\Swift_Mailer $mailer,Request $request): Response
+    {
+        //récupérer le mail de réception, le contenu de msg ainsi l id de réclamation
+        $msg = $request->get('msg');
+        $mailuser = $request->get('mailuser');
+        $idreclamation = $request->get('idr');
+
+        //préparer le msg
+        $message = (new \Swift_Message('Réponse reclamation'))
+            ->setFrom('1magicbook1@gmail.com')
+            ->setTo($mailuser)
+            ->setBody(
+                $msg
+            )
+        ;
+
+        //envoyer le msg
+        $mailer->send($message);
+
+
+        //update état
+        $em = $this->getDoctrine()->getManager();
+        $reclamation = $this->getDoctrine()->getRepository(Reclamation::class)->find($idreclamation);
+        $reclamation->setEtat("Traité");
+        $em->flush();
+
+        //retour vers la page index
+        return $this->redirectToRoute('reclamation_index');
+    }
+
+
 }

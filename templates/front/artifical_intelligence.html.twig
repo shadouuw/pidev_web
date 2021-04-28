@@ -1,0 +1,627 @@
+
+
+
+{{ include('front/nav.html.twig') }}
+
+
+
+<style>
+.center {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 50%;
+}
+.center2 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+body
+{
+background-color: #080615;
+
+}
+.navbar-area
+{
+    background-color: white;
+}
+.register-form
+{
+    position: relative;
+    bottom: 100px;
+    background-color: #080615;
+}
+h1
+{
+    color : white;
+}
+</style>
+
+<img  onclick="speechToTextConversion()" id="playButton" src="{{ asset('nadia.gif') }}"  class="center" >
+
+<section class="register-area ptb-50">
+    <div class="container">
+        <div class="register-form">
+
+            <div class="form-group">
+                <h1 class="center2">What do you need ?</h1>
+              <input id="myInput" class="form-control">
+        
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+
+
+{{ include('front/footer.html.twig') }}
+
+
+
+
+
+<script>
+
+
+
+
+
+</script>
+<script src="js85a3?v=WaLyRPmL2Wcer1yqLJ4QIT0zo-hQ1D0mGGKHVEF0Eek1"></script>
+
+<script type="text/javascript">
+
+    var playlist, player, voices, hostedVoices;
+    var selectedVoice = null;
+    var useTextInteraction = true;
+    var useTextHighlighting = true;
+    var useUi = true;
+    var hi;
+    var wo_get;
+
+    talkify.config.ui.audioControls.enabled = true;
+    talkify.config.ui.audioControls.controlcenter = "modern";
+    talkify.config.ui.audioControls.container = document.body;
+
+    talkify.config.remoteService.host = '';
+    talkify.config.remoteService.speechBaseUrl = '/api/internal/speech';
+    talkify.config.remoteService.languageBaseUrl = '/api/internal/language';
+
+    $(document).ready(function () {
+        loadWebSpeechVoices();
+        loadHostedVoices();
+
+        $('#webSpeechVoices').hide();
+        $('#talkifyVoices').hide();
+        $("#textInteraction").click(toggleTextInteraction);
+        $("#textHighlighting").click(toggleTextHighlighting);
+        $("#audioControls").click(toggleAudioControls);
+        $("#hostedVoices").click(toggleHostedVoices);
+        $("#btnWebSpeechVoices").click(toggleWebSpeechVoices);
+        $("#playSelf").click(start);
+    });
+
+    function start() {
+
+        if (!player) {
+
+
+            selectedVoice=   window.speechSynthesis.getVoices()[2];
+            console.log(selectedVoice);
+            loadWebSpeechPlayer();
+
+            if (playlist) {
+                playlist.replayCurrent();
+            }
+
+            subscribe(player);
+        }
+
+        var s="hello word";
+        var builder = new talkify.playlist()
+            .begin()
+            .usingPlayer(player)
+            .withElements(s)
+
+            .subscribeTo({
+
+            });
+
+        if (useTextInteraction) {
+            builder.withTextInteraction();
+        }
+
+        playlist = builder.build();
+
+        player.playText(spoken_text);
+    }
+
+    function loadTtsPlayer() {
+        if (player) {
+            player.dispose();
+        }
+
+        loadPlayer(new talkify.TtsPlayer());
+    }
+
+    function loadWebSpeechPlayer() {
+        if (player) {
+            player.dispose();
+        }
+
+        loadPlayer(new talkify.Html5Player());
+    }
+
+    function loadPlayer(instance) {
+        player = instance.forceVoice(selectedVoice);
+
+        if (useTextHighlighting) {
+            player.enableTextHighlighting();
+        }
+
+        subscribe(player);
+
+        if (playlist) {
+            playlist.setPlayer(player);
+        }
+    }
+
+    function loadWebSpeechVoices() {
+        window.speechSynthesis.getVoices();
+        setTimeout(function () {
+            voices = window.speechSynthesis.getVoices();
+
+            var ul = $("#webSpeechVoices");
+
+            for (var i = 0; i < voices.length; i++) {
+                var local = voices[i].localService ? "local" : "remote";
+                var li = $("<li>" + voices[i].name + " (" + local + ")</li>");
+                li.data('voice', voices[i].name);
+
+                ul.append(li);
+            }
+
+            ul.find("li").click(function (e) {
+                ul.hide();
+
+                var voice = voices.filter(function (x) { return x.name === $(e.currentTarget).data('voice'); })[0];
+                selectedVoice = voice;
+
+                loadWebSpeechPlayer();
+
+                if (playlist) {
+                    playlist.replayCurrent();
+                }
+            });
+        }, 100);
+    }
+
+
+
+    function play()
+    {
+        grammar();
+
+        start();
+    }
+
+    const dictionaryJson =
+        "https://raw.githubusercontent.com/adambom/dictionary/master/dictionary.json";
+
+    function grammar()
+    {var s=saved_text.toString();
+        var s1="";
+        if (s.includes("hi") || s.includes("hello")) {
+
+            if (s.includes("bro")) {
+                s1 = "Hello bro!";
+
+            } else
+
+            {
+                s1 = "Hello {{ user }}";
+
+            }
+        } else if (s.includes("how are you")) {
+            var decider = parseInt(Math.random() * 3 + 1);
+
+            if (decider == 1) {
+                s1 = "Alhamdulillah. What about you?";
+
+            } else if (decider == 2) {
+                s1 = "Alhamdulillah. I am fine. What about you?";
+
+            }
+            else if (decider == 3) {
+                s1 = "I am doing fine. what about you ?";
+
+            }
+        } else if (s.includes("joke")) {
+            s1 = "What�s the difference between Windows 95 and a virus? A virus does something.";
+
+        } else if ((s.includes("thanks")) || (s.includes("thank you"))) {
+            s1 = "it's my pleasure.";
+
+
+        } else if ((s.includes("who created ")) || (s.includes("created"))) {
+            s1 = "People call him hama";
+
+        } else if (s.includes("help")) {
+            s1 = "In sha Allah I will try.";
+
+        } else if (s.includes("ok")) {
+            s1 = "Thank you sir.";
+
+        } else if (s.includes("who are you")) {
+            s1 = "I am your Personal Assistant.I am here to help you.";
+
+        } else if (s.includes("can you")) {
+            s1 = "I will try.";
+
+        } else if ((s.includes("assalamualaikum")) || (s.includes("salam"))) {
+            s1 = "Walaikumassalam.";
+
+        } else if ((s.includes("morning")) || (s.includes("night")) || (s.includes("evening"))) {
+            s1 = s;
+
+        } else if ((s.includes("fine")) || (s.includes("i am ok")) || (s.includes("i am alright"))
+            || (s.includes("fantastic"))) {
+            s1 = "Great!!";
+
+        } else if ((s.includes("not fine")) || (s.includes("bad")) || (s.includes("sad"))) {
+            s1 = "Don't worry everything will be ok.";
+
+        } else if (s.includes("what is your name")) {
+            let decider = parseInt(Math.random() * 3 + 1);
+            if (decider == 1) {
+                s1 = "my name is Nadia i am your personnel assistant.";
+
+            } else if (decider == 2) {
+                s1 = "Why?";
+
+            }
+            else if (decider == 3) {
+                s1 = "I'am Nadia nice to meet you";
+
+            }
+        } else if (s.includes("who am i?")) {
+
+            s1 = "You are my Boss";
+
+        } else if (s.includes("sing a song")) {
+
+            s1 = "Tujhe dekha to ye jana sanam Pyar hota hain dewana sanam";
+
+        } else if (s.includes("sing another song")) {
+
+            s1 = "You just want attention, you don't want my heart\r\n"
+                + "Maybe you just hate the thought of me with someone new\r\n"
+                + "Yeah, you just want attention, I knew from the start\r\n"
+                + "You're just making sure I'm never gettin' over you";
+
+        } else if (s.includes("esprit")) {
+
+            s1 = "école supérieure privée d'ingénierie et de technologies";
+
+        } else if (s.includes("why sorry")) {
+
+            s1 = "because i couldn't give you your answer sir";
+
+        } else if (s.includes("how old are you")) {
+
+            s1 = "sorry it's personal";
+
+        } else if (s.includes("married") || s.includes("boyfriend")) {
+
+            s1 = "I am single";
+
+        } else if (s.includes("i love you")) {
+
+            s1 = "I love you too";
+
+        } else if (s.includes("can you learn new")) {
+
+            s1 = "I'm still learning";
+
+        } else if (s.includes("speak in bangla")) {
+
+            s1 = "kemon acho? valo acho?";
+
+        } else if (s.includes("valo achi")) {
+
+            s1 = "Amio valo achi";
+
+        } else if (s.includes("play a song")) {
+
+            s1 = "Please write on above youtube bar sir!";
+
+        } else if (s.includes("stupid") || s.includes("nonsense")) {
+
+            s1 = "Please don't use bad words!";
+
+        } else if (s.includes("what you can't do")) {
+
+            s1 = "i can do only a few things i'm still learning";
+
+        } else if (s.includes("java")) {
+
+            s1 = "programing language";
+
+        } else if (s.includes("happy birthday")) {
+
+            s1 = "sorry today is not my birthday";
+
+        } else if (s.includes("send a email")) {
+
+            s1 = "sir please you need to login on gmail and can send email.you can search email on google search bar";
+
+        } else if (s.includes("cse")) {
+
+            s1 = "computer science and engineering";
+
+        } else if (s.includes("cse dept head of mist")) {
+
+            s1 = "Air cmdt Afzal sir";
+
+        } else if (s.includes("java course teacher")) {
+
+            s1 = "lt cdr Arnab pal sir,Captain Naim sir,Lec Anik sir and Lec Antu sir";
+
+        } else if (s.includes("sad")) {
+
+            s1 = "please don't be sad!! everything will be alright";
+
+        } else if (s.includes("wow")) {
+
+            s1 = "thank you sir";
+
+        } else if (s.includes("nice")) {
+
+            s1 = "thank you sir";
+
+        } else if (s.includes("very nice")) {
+
+            s1 = "thank you sir";
+
+        } else if (s.includes("wonderful")) {
+
+            s1 = "thank you sir";
+
+        } else if (s.includes("funny")) {
+
+            s1 = "thank you sir";
+
+        } else if (s.includes("not good") || s.includes("bad")) {
+
+            s1 = "sorry sir";
+
+        } else if (s.includes("dance")) {
+
+            s1 = "sorry sir i can't";
+
+        } else if (s.includes("artificial intelligence")) {
+
+            s1 = "Artificial intelligence (AI) is an area of computer science that emphasizes the creation of intelligent machines that work and react like humans. Some of the activities computers with artificial intelligence are designed for include: Speech recognition.";
+
+        } else if (s.includes("hi nadia") ||  s.includes("nadia") ) {
+
+            s1 = "Yes Sir";
+
+        }
+       else if( (s.includes("+")) || (s.includes("*")) || (s.includes("/")) || (s.includes("-")) )
+        {
+
+            s1=eval(s);
+            console.log(s1);
+        }
+       else if(s.includes("time") || s.includes("what time is it"))
+        {
+            var d = new Date();
+s1=String(d);
+        }
+        spoken_text=String(s1);
+
+    if(s.includes("what does") || s.includes("mean") || s.includes("meaning"))
+        {
+
+        wo=String(s);
+        wo =wo.replace("what","");
+        wo=wo.replace("does","");
+          wo=wo.replace("mean","");
+          wo=wo.replaceAll(" ","");
+
+          wo=wo.replace("?","");
+          console.log(wo);
+
+
+            fetch(dictionaryJson)
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+
+                    let word =String(wo);
+
+                    let searchKeyword = word.toUpperCase();
+                    Object.keys(data).forEach(function(key) {
+                        if (key === searchKeyword) {
+
+                            if(searchKeyword === data[key]){
+
+                            }
+                            else{
+
+                                wo_get= data[key];
+                                spoken_text=String(wo_get);
+                                start();
+                                console.log(spoken_text)
+                                trash=data[key];
+
+
+                            }
+
+
+                        }
+
+                    });
+                });
+
+          console.log(wo_get);
+
+
+
+
+        }
+
+
+
+
+    }
+
+
+
+    function speechToTextConversion()
+    {
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
+
+        var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
+
+        var recognition = new SpeechRecognition();
+
+        recognition.continuous = true;
+        recognition.lang = 'en-IN';
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+
+        var diagnostic = document.getElementById('myInput');
+
+
+        var i=0;
+        var j=0;
+        document.getElementById("playButton").onclick = function() {
+            if(i==0)
+            {
+                document.getElementById("playButton").src="nadia.gif";
+                recognition.start();
+                i=1;
+            }
+            else
+            {
+                document.getElementById("playButton").src="nadia.gif";
+                recognition.stop();
+                play();
+                i=0;
+            }
+        }
+        recognition.onresult = function(event) {
+            var last = event.results.length - 1;
+            var convertedText = event.results[last][0].transcript;
+             diagnostic.value=convertedText;
+            saved_text=convertedText;
+            console.log('Confidence: ' + event.results[0][0].confidence);
+        }
+
+        recognition.onnomatch = function(event) {
+            diagnostic.value = 'I didnt recognise that.';
+        }
+        recognition.onerror = function(event) {
+            diagnostic.value = 'Error occurred in recognition: ' + event.error;
+        }
+    };
+
+
+   function mathematics()
+   {
+       var s=saved_text.toString();
+       var s1="";
+      if (s.includes("+"))
+      {
+s1=eval(s);
+
+      }
+       spoken_text=s1;
+
+
+          }
+
+
+    function stop()
+    {
+        window.speechSynthesis.cancel();
+    }
+    var input = document.getElementById("myInput");
+
+    input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            saved_text=document.getElementById("myInput").value;
+            grammar();
+
+            start();
+        }
+    });
+
+    function searchDict() {
+        event.preventDefault();
+        fetch(dictionaryJson)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+
+                let word = wo;
+                console.log(word)
+                let searchKeyword = word.toUpperCase();
+                Object.keys(data).forEach(function(key) {
+                    if (key === searchKeyword) {
+                        searchWord.innerHTML = searchKeyword;
+                        if(searchKeyword === data[key]){
+                            description.innerHTML = "Not found";
+                        }
+                        else{
+                            description.innerHTML  = data[key];
+                            console.log(data[key]+"123")
+
+                        }
+
+
+                    }
+
+                });
+            });
+
+    }
+
+
+
+
+
+
+</script>
+
+<style>
+    .talkify-flag
+
+    {
+        visibility: hidden;
+        display:none;
+    }
+    .talkify-detached
+    {
+        visibility: hidden;
+        display:none;
+    }
+
+    .talkify-control-center
+    {
+        visibility: hidden;
+        display:none;
+    }
+</style>

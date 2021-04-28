@@ -56,6 +56,11 @@ class Concours
      */
     private $isDone = '0';
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $img;
+
     public function getIdConcours(): ?int
     {
         return $this->idConcours;
@@ -117,6 +122,18 @@ class Concours
     public function setIsDone(int $isDone): self
     {
         $this->isDone = $isDone;
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(string $img): self
+    {
+        $this->img = $img;
 
         return $this;
     }
