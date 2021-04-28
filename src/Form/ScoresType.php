@@ -2,26 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Commentaire;
+use App\Entity\Scores;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Brokoskokoli\StarRatingBundle\Form\RatingType;
 
-class CommentaireType extends AbstractType
+class ScoresType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('contenu')
-            ->add('rating', RatingType::class);
-
+            ->add('idUser')
+            ->add('idJeux')
+            ->add('score')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Commentaire::class,
+            'data_class' => Scores::class,
         ]);
     }
 }

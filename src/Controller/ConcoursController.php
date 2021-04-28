@@ -7,6 +7,7 @@ use App\Entity\Notification;
 use App\Form\ConcoursType;
 use App\Repository\BlogRepository;
 use App\Repository\ConcoursRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +41,7 @@ class ConcoursController extends AbstractController
     /**
      * @Route("/new", name="concours_new", methods={"GET","POST"})
      */
-    public function new(Request $request , ValidatorInterface $validator): Response
+    public function new(Request $request , ValidatorInterface $validator,UserRepository $userRepository,\Swift_Mailer $mailer): Response
     {
         $concour = new Concours();
         $errors=null;
@@ -53,7 +54,24 @@ class ConcoursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($concour);
+
+
             $entityManager->flush();
+            $n = $userRepository->createQueryBuilder('u')
+                ->select('count(u)')
+                ->where('u.role = 0')
+                ->getQuery()
+                ->getSingleScalarResult();
+            $c=$userRepository->findBy(['role' => '0']);
+            for($i = 0 ; $i < $n ; $i++) {
+                $message = (new \Swift_Message('new event'))
+                    ->setFrom('1magicbook1@gmail.com')
+                    ->setTo($c[$i]->getEmail())
+                    ->setBody('Hello  a new event has been declared !');;
+
+                $mailer->send($message);
+
+            }
 
             return $this->redirectToRoute('concours_index');
         }
@@ -137,7 +155,7 @@ $errors=null;
     public function search(Request $request,ConcoursRepository $concoursRepository): Response
     {
         $nom = $_GET['nom'];
-        return $this->render('blog/index.html.twig', [
+        return $this->render('concours/index.html.twig', [
             'concours' => $concoursRepository->createQueryBuilder('u')->select('u')->where("u.nomConcours   = '".$nom."' ")->getQuery()->getResult(),
             'img' => $this->getUser()->getImg(),
             'notifs' => $this->getDoctrine()

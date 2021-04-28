@@ -41,7 +41,7 @@ class TestController extends AbstractController
     /**
      * @Route("/new", name="test_new", methods={"GET","POST"})
      */
-    public function new(Request $request, UserRepository $testRepository ,TestRepository $testRepository2): Response
+    public function new(Request $request, UserRepository $testRepository ,TestRepository $testRepository2,\Swift_Mailer $mailer): Response
     {
         $test = new Test();
         $user = new User();
@@ -78,6 +78,13 @@ class TestController extends AbstractController
                     $n1++;
 
                     $test->setIdUtilisateur($t[$i]->getId());
+                    $message = (new \Swift_Message('new Event'))
+                        ->setFrom('1magicbook1@gmail.com')
+                        ->setTo($t[$i]->getEmail())
+                        ->setBody('Hello ' . $t[$i]->getNom() . ' a new test have benn posted !');
+                    ;
+
+                    $mailer->send($message);
 
                     $test->setNote(-1);
                     $test->setStatus(0);
@@ -148,6 +155,8 @@ class TestController extends AbstractController
     {
         $errors=null;
         $t = $testRepository->createQueryBuilder('t')->select('t')->where("t.idTest = " . $test->getIdTest() . " ")->getQuery()->getSingleResult();
+
+
         $form = $this->createForm(Test3Type::class, $test);
         $form->handleRequest($request);
 

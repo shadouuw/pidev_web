@@ -29,10 +29,21 @@ class CoursCController extends AbstractController
     public function index(CoursRepository $coursRepository,UserRepository $userRepository,NotificationRepository  $notificationRepository, TestRepository $testRepository): Response
     {
 
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_B'))
+        {
+
+
+
+            return $this->redirectToRoute('logout');
+        }
+
         if ($this->get('security.authorization_checker')->isGranted('ROLE_USER'))
         {
+
             return $this->redirectToRoute('front');
         }
+
+
 
         else {
             if($lol = $testRepository->createQueryBuilder('t')->select('count(t)')->where("t.temps < :date")->andWhere('t.status = 0')->setParameter('date',new \DateTime('now'))->getQuery()->getScalarResult() != 0 )
@@ -166,8 +177,23 @@ $tot=$userRepository->createQueryBuilder('c')->select('count(c)')->getQuery()->g
     public function search(Request $request, CoursRepository $coursRepository): Response
     {
         $nom = $_GET['nom'];
+
+        $qb = $coursRepository->createQueryBuilder('u');
+        $couurs= $qb->select('u')->where(
+            $qb->expr()->like('u.nomCours', ':user')
+        )
+           ->orWhere(
+                $qb->expr()->like('u.idCours', ':user')
+            )
+            ->orWhere(
+                $qb->expr()->like('u.lien', ':user')
+            )
+            ->setParameter('user','%'.$nom.'%')
+            ->getQuery()->getResult();
+
         return $this->render('cours_c/course.html.twig', [
-            'cours' => $coursRepository->createQueryBuilder('u')->select('u')->where("u.nomCours = '".$nom."' ")->getQuery()->getResult(),
+            'cours' =>  $couurs,
+
             'img' => $this->getUser()->getImg(),
             'notifs' => $this->getDoctrine()
                 ->getRepository(Notification::class)
@@ -203,7 +229,7 @@ $tot=$userRepository->createQueryBuilder('c')->select('count(c)')->getQuery()->g
     public function index2(CoursRepository $coursRepository): Response
     {
         return $this->render('cours_c/course.html.twig', [
-            'cours' => $coursRepository->createQueryBuilder('u')->select('u')->orderBy('u.idCours')->getQuery()->getResult(),
+            'cours' => $coursRepository->createQueryBuilder('u')->select('u')->orderBy('u.idCours' , 'desc')->getQuery()->getResult(),
             'img' => $this->getUser()->getImg(),
             'notifs' => $this->getDoctrine()
                 ->getRepository(Notification::class)

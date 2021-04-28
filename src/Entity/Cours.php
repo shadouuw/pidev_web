@@ -115,5 +115,11 @@ class Cours
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->nomCours;
+    }
+
+
 
 }

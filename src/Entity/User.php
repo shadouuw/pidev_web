@@ -130,15 +130,31 @@ class User implements UserInterface
      */
     private $img;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+
 
 
 
     public function getRoles()
     {
-        if ($this->role == 0) {
-            return ['ROLE_USER'];
-        } else if ($this->role == 3) {
-            return ['ROLE_ADMIN'];
+        if ($this->status == 1) {
+            if ($this->role == 0) {
+                return ['ROLE_USER'];
+
+            }
+            else if($this->role == 2)
+            {
+                return ['ROLE_ADMIN'];
+            }
+            else if ($this->role == 3) {
+                return ['ROLE_ADMIN'];
+            }
+        } else {
+
+            return ['ROLE_B'];
         }
     }
 
@@ -221,20 +237,20 @@ class User implements UserInterface
         return $this->age;
     }
 
-    public function setAge(?int $age): self
+    public function setAge(?string $age): self
     {
         $this->age = $age;
 
         return $this;
     }
-    public function getToken(): ?int
+    public function getToken(): ?string
     {
-        return $this->age;
+        return $this->token;
     }
 
     public function setToken(?int $age): self
     {
-        $this->age = $age;
+        $this->token = $age;
 
         return $this;
     }
@@ -332,6 +348,18 @@ class User implements UserInterface
     public function setImg(string $img): self
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

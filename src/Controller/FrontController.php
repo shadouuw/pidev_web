@@ -11,52 +11,82 @@ use App\Form\TestType;
 use App\Form\Test2Type;
 use App\Repository\BlogRepository;
 use App\Repository\CommentaireRepository;
+use App\Repository\ConcoursRepository;
 use App\Repository\CoursRepository;
+use App\Repository\UserRepository;
+
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use ZipArchive;
 use App\Repository\TestRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Knp\Snappy\Pdf;
+use Fungio\GoogleMap\Map;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Fungio\GoogleMap\MapTypeId;
+use Fungio\GoogleMap\Helper\MapHelper;
+
 use Symfony\Component\Routing\Annotation\Route;
 
 
 class FrontController extends AbstractController
 {
+    private $encoder;
+    private $snappy;
+    public function __construct(Pdf $snappy , UserPasswordEncoderInterface $encoder)
+    {
+        $this->snappy = $snappy;
+        $this->encoder=$encoder;
+    }
 
 
 
     /**
      * @Route("/front", name="front")
      */
-    public function index(): Response
+
+    public function index(TestRepository  $testRepository): Response
     {
+        $pieChart = new PieChart();
+        $pieChart->getData()->setArrayToDataTable(
+            [['Task', 'Hours per Day'],
+                ['Work',     11],
+                ['Eat',      2],
+                ['Commute',  2],
+                ['Watch TV', 2],
+                ['Sleep',    7]
+            ]
+        );
+        $pieChart->getOptions()->setTitle('My Daily Activities');
+        $pieChart->getOptions()->setHeight(500);
+        $pieChart->getOptions()->setWidth(900);
+        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setColor('#009900');
+        $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+        $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
 
 
 
-
-        $docObj = new DocxConversion("Ines.docx");
-        $doc=$docObj->read_docx("Ines.docx");
-
-
-        $cours = $this->getDoctrine()
-            ->getRepository(Cours::class)
-            ->findAll();
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findAll();
+        $mapHelper = new MapHelper();
         return $this->render('front/hi.html.twig', [
-            'controller_name' => 'FrontController',
-            'cours' => $cours,
-            'user' => $user,
-            'word' => $doc
+        'controller_name' => 'FrontController',
+            'chart' => $pieChart
+
+    ]);
 
 
-        ]);
+
+
+
+
     }
     /**
      * @Route("/front_log", name="front_log")
      */
-    public function sucess(TestRepository $testRepository): Response
+    public function sucess(TestRepository $testRepository,UserRepository $userRepository,ConcoursRepository $concoursRepository): Response
     {
         $cours = $this->getDoctrine()
             ->getRepository(Cours::class)
@@ -71,9 +101,12 @@ class FrontController extends AbstractController
 
         return $this->render('front/sucess.html.twig', [
             'controller_name' => 'FrontController',
+            'teacher'=>$userRepository->createQueryBuilder('u')->select('u')->where('u.role = 2')->getQuery()->getResult(),
             'user' =>  $user = $this->getUser()->getNom(),
             'id' => $this->getUser()->getId(),
-            'cours' => $cours
+            'concours' => $concoursRepository->findAll(),
+            'cours' => $cours,
+            'id_modif' => $this->getUser()->getId()
 
         ]);
     }
@@ -118,6 +151,22 @@ class FrontController extends AbstractController
         return $this->render('front/cours_front.html.twig', [
             'controller_name' => 'FrontController',
             'cours' => $cours,
+            'id' => $this->getUser()->getId()
+        ]);
+    }
+    /**
+     * @Route("/nadia_front", name="nadia_front")
+     */
+    public function index33(TestRepository $testRepository): Response
+    {
+        $cours = $this->getDoctrine()
+            ->getRepository(Cours::class)
+            ->findAll();
+
+        return $this->render('front/artifical_intelligence.html.twig', [
+            'controller_name' => 'FrontController',
+            'cours' => $cours,
+            'user' => $this->getUser()->getNom(),
             'id' => $this->getUser()->getId()
         ]);
     }
@@ -222,8 +271,180 @@ class FrontController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/marks", name="marks")
+     */
+    public function marks(TestRepository $testRepository): Response
+    {
+        $test= $this->getDoctrine()
+            ->getRepository(Blog::class)
+            ->findAll();
+        $corrected_test=$testRepository->createQueryBuilder('t')->select('avg(t.note)')->where('t.idUtilisateur = '.$this->getUser()->getId().' ')
+            ->andWhere('t.status = 2')->getQuery()->getSingleScalarResult();
 
+        return $this->render('front/marks.html.twig', [
+            'controller_name' => 'FrontController',
+            'user' =>  $user = $this->getUser()->getNom(),
+            'id' => $this->getUser()->getId(),
+            'avg' =>  $corrected_test,
+
+            'test' =>$testRepository->createQueryBuilder('t')->select('t')->where('t.status = 2 ')->getQuery()->getResult()
+
+            ]);
+    }
+    /**
+     * @Route("/export_pdf", name="export_pdf")
+     */
+    public function export_pdf(TestRepository $testRepository): Response
+    {
+        $corrected_test=$testRepository->createQueryBuilder('t')->select('avg(t.note)')->where('t.idUtilisateur = '.$this->getUser()->getId().' ')
+            ->andWhere('t.status = 2')->getQuery()->getSingleScalarResult();
+        $html = $this->renderView('front/export.html.twig', [
+            'controller_name' => 'FrontController',
+            'user' =>  $user = $this->getUser()->getNom(),
+            'id' => $this->getUser()->getId(),
+            'avg' =>  $corrected_test,
+            'test' =>$testRepository->createQueryBuilder('t')->select('t')->where('t.status = 2 ')->getQuery()->getResult(
+
+            )
+
+
+        ]);
+
+//Generate pdf with the retrieved HTML
+        return new Response( $this->snappy->getOutputFromHtml($html), 200, array(
+            'Content-Type'          => 'application/pdf',
+            'Content-Disposition'   => 'inline; filename="export.pdf"'
+
+        ));
+
+    }
+
+
+    /**
+     * @Route("/recup_mdp", name="recup_mdp")
+     */
+    public function recup_mdp(UserRepository $userRepository): Response
+    {
+
+
+        return $this->render('front/recupere_mdp.html.twig', [
+            'controller_name' => 'FrontController',
+
+        ]);
+    }
+    /**
+     * @Route("/write_code", name="write_code")
+     */
+    public function write_code2(UserRepository $userRepository,Request $request,\Swift_Mailer $mailer): Response
+    {
+     $s=new Session();
+
+     $mail=$_GET['email'];
+        $s->set('email',$mail);
+     $n=$userRepository->createQueryBuilder('u')->select('count(u)')
+         ->where("u.email = '".$mail."' ")->getQuery()->getSingleScalarResult();
+
+
+     if($n == 0 )
+{
+  echo "<script> alert('this mail does not exist !!'); </script>";
+
+
+
+    return $this->render('front/recupere_mdp.html.twig', [
+        'controller_name' => 'FrontController',
+    ]);
+}
+else {
+    $s=rand(1000,9999);
+    $message = (new \Swift_Message('new test'))
+        ->setFrom('1magicbook1@gmail.com')
+        ->setTo($mail)
+        ->setBody('The code is '.$s);
+    ;
+    $userRepository->createQueryBuilder('t')->update('App\Entity\User','u')->set('u.code' , $s )->where("u.email = '".$mail."' ")->getQuery()->execute();
+    $mailer->send($message);
+
+    return $this->render('front/confirmation_code.html.twig', [
+        'controller_name' => 'FrontController',
+
+    ]);
+}
+    }
+
+    /**
+     * @Route("/confirm_code", name="confirm_code")
+     */
+    public function confirm_code(UserRepository $userRepository,Request $request): Response
+    {
+        $code = $_GET['code'];
+        $s=new Session();
+        $mail=$s->get('email');
+        $c=$userRepository->createQueryBuilder('u')
+            ->select('u.code')->where("u.email = '".$mail."' ")->getQuery()->getSingleScalarResult();
+        if($code == $userRepository->createQueryBuilder('u')
+                ->select('u.code')->where("u.email = '".$mail."' ")->getQuery()->getSingleScalarResult()
+        )
+        {
+            return $this->render('front/nouveau_mdp.html.twig', [
+                'controller_name' => 'FrontController',
+
+            ]);
+        }
+
+
+
+        else
+        {
+            echo "<script> alert('The code is not valid !!'); </script>";
+            return $this->render('front/confirmation_code.html.twig', [
+                'controller_name' => 'FrontController',
+
+            ]);
+        }
+    }
+
+
+
+/**
+ * @Route("/change_password", name="change_password")
+ */
+public function change_passworde(UserRepository $userRepository,Request $request): Response
+{
+    $pass1 = $_GET['pass1'];
+    $pass2 = $_GET['pass2'];
+    $u=new User();
+    $s=new Session();
+    $mail=$s->get('email');
+    if ($pass1 == $pass2) {
+
+        $password=$this->encoder->encodePassword( $u,$pass1);
+
+
+        $userRepository->createQueryBuilder('u')->update('App\Entity\User','u')->set('u.motDePasse',':password')->set('u.token',':pass' )->setParameter('password',$password)->setParameter('pass',$pass1)->where("u.email = '".$mail."' ")->getQuery()->execute();
+        return $this->render('security/login.html.twig', [
+            'error' => $error=null,
+                'last_username' => $last_username=null,
+                'user' => $user=null,
+                'password' => $password=null
+
+        ]);
+
+
+    }
+    else
+    {
+        return $this->render('front/nouveau_mdp.html.twig', [
+            'controller_name' => 'FrontController',
+
+        ]);
+    }
 
 
 }
+
+    }
+
+
 

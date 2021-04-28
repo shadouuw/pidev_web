@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Notification;
 use App\Entity\Reclamation;
 use App\Form\ReclamationType;
+use App\Repository\ReclamationRepository;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Material\ColumnChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +22,21 @@ class ReclamationController extends AbstractController
     /**
      * @Route("/", name="reclamation_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(ReclamationRepository $reclamationRepository): Response
     {
+        $oldColumnChart = new ColumnChart();
+        $oldColumnChart->getData()->setArrayToDataTable(
+            [
+                ['Name', 'Complaints'],
+                ['Treated', $reclamationRepository->createQueryBuilder('r')->select('count(r)')->where("r.etat = 'traité'")->getQuery()->getSingleScalarResult()],
+                ['Not Treated', $reclamationRepository->createQueryBuilder('r')->select('count(r)')->where("r.etat = 'non traité'")->getQuery()->getSingleScalarResult()],
+
+            ]
+        );
+        $oldColumnChart->getOptions()->getLegend()->setPosition('top');
+        $oldColumnChart->getOptions()->setWidth(950);
+        $oldColumnChart->getOptions()->setHeight(550);
+
         $reclamations = $this->getDoctrine()
             ->getRepository(Reclamation::class)
             ->findAll();
@@ -31,7 +47,8 @@ class ReclamationController extends AbstractController
             'notifs' => $this->getDoctrine()
                 ->getRepository(Notification::class)
                 ->findAll(),
-            'user' =>  $user = $this->getUser()->getNom()
+            'user' =>  $user = $this->getUser()->getNom(),
+            'chart' => $oldColumnChart
 
 
 
@@ -107,4 +124,52 @@ class ReclamationController extends AbstractController
 
         return $this->redirectToRoute('reclamation_index');
     }
+    /**
+     * @Route("/{id}", name="reclamation_detail", methods={"GET"})
+     */
+    public function show(Reclamation $reclamation): Response
+    {
+        return $this->render('reclamation/detail.html.twig', [
+            'reclamation' => $reclamation,
+            'img' => $this->getUser()->getImg(),
+            'notifs' => $this->getDoctrine()
+                ->getRepository(Notification::class)
+                ->findAll(),
+            'user' => $user = $this->getUser()->getNom()
+        ]);
+    }
+    /**
+     * @Route("/send", name="reclamation_send", methods={"GET","POST"})
+     */
+    public function send(\Swift_Mailer $mailer,Request $request): Response
+    {
+        //récupérer le mail de réception, le contenu de msg ainsi l id de réclamation
+        $msg = $request->get('msg');
+        $mailuser = $request->get('mailuser');
+        $idreclamation = $request->get('idr');
+
+        //préparer le msg
+        $message = (new \Swift_Message('Réponse reclamation'))
+            ->setFrom('1magicbook1@gmail.com')
+            ->setTo($mailuser)
+            ->setBody(
+                $msg
+            )
+        ;
+
+        //envoyer le msg
+        $mailer->send($message);
+
+
+        //update état
+        $em = $this->getDoctrine()->getManager();
+        $reclamation = $this->getDoctrine()->getRepository(Reclamation::class)->find($idreclamation);
+        $reclamation->setEtat("Traité");
+        $em->flush();
+
+        //retour vers la page index
+        return $this->redirectToRoute('reclamation_index');
+    }
+
+
 }
