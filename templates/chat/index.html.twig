@@ -1,0 +1,110 @@
+{{ include('cours_c/nav.html.twig') }}
+
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row" id="proBanner">
+                    <div class="col-12">
+                <span class="d-flex align-items-center purchase-popup">
+                  <p>Here you can add delete and update anything !</p>
+                  <a href="https://www.bootstrapdash.com/product/purple-bootstrap-admin-template?utm_source=organic&utm_medium=banner&utm_campaign=free-preview" target="_blank" class="btn download-button purchase-button ml-auto">Hello how are you doing ?</a>
+                  <i class="mdi mdi-close" id="bannerClose"></i>
+                </span>
+                    </div>
+                </div>
+                <div class="page-header">
+                    <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white mr-2">
+                  <i class="mdi mdi-mailbox"></i>
+                </span> Complaints
+                    </h3>
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Recent Messages</h4>
+                                <div class="table-responsive">
+
+
+                                    <h1>Nouveau message</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for chat in chats %}
+            <tr>
+                <td>{{ chat.id }}</td>
+                <td>{{ chat.nomUtilisateur }}</td>
+                <td>{{ chat.nom }}</td>
+                <td>{{ chat.prenom }}</td>
+
+                <td>
+                    <a href="{{ path('chat_messagedetails', {'id': chat.id}) }}">Ouvrir message</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<br>
+                                    <h1>Utilisateurs</h1>
+                                    {% for u in allusers %}
+                                    <a href="{{ path('chat_messagedetails', {'id': u.id}) }}"> {{  u.nomUtilisateur }}</a>
+                                    <br>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+</div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="{{asset('assets/vendors/chart.js/Chart.min.js')}}"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{{asset('assets/js/off-canvas.js')}}"></script>
+    <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
+    <script src="{{asset('assets/js/misc.js') }}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="{{asset('assets/js/dashboard.js')}}"></script>
+    <script src="{{asset('assets/js/todolist.js')}}"></script>
+
+
+
+
+
+
+
+
+

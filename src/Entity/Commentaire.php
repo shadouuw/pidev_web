@@ -42,6 +42,21 @@ class Commentaire
      */
     private $contenu;
 
+    /**
+     * @ORM\Column(name="id_blog",type="integer")
+     */
+    private $idblog;
+
+    /**
+     * @ORM\Column(name="id_user",type="integer")
+     */
+    private $iduser;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $rating;
+
     public function getIdCommentaire(): ?int
     {
         return $this->idCommentaire;
@@ -79,6 +94,42 @@ class Commentaire
     public function setContenu(string $contenu): self
     {
         $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    public function getIdblog(): ?int
+    {
+        return $this->idblog;
+    }
+
+    public function setIdblog(int $idblog): self
+    {
+        $this->idblog = $idblog;
+
+        return $this;
+    }
+
+    public function getIduser(): ?int
+    {
+        return $this->iduser;
+    }
+
+    public function setIduser(int $iduser): self
+    {
+        $this->iduser = $iduser;
+
+        return $this;
+    }
+
+    public function getRating(): ?int
+    {
+        return $this->rating;
+    }
+
+    public function setRating(int $rating): self
+    {
+        $this->rating = $rating;
 
         return $this;
     }

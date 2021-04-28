@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use  Symfony\Component\Validator\Constraints as Assert;
 /**
 @ORM\Entity(repositoryClass="App\Repository\TestRepository")
  */
@@ -60,7 +61,6 @@ class Test
 
     /**
      * @var int|null
-     *
      * @ORM\Column(name="note", type="integer", nullable=true)
      */
     private $note;
@@ -115,9 +115,9 @@ class Test
     private $reponse5;
 
     /**
-     * @var int|null
+     * * @var \DateTime
      *
-     * @ORM\Column(name="temps", type="integer", nullable=true)
+     * @ORM\Column(name="temps", type="date", nullable=true)
      */
     private $temps;
 
@@ -139,7 +139,12 @@ class Test
     {
         return $this->idTest;
     }
+    public function setIdTest(?int $question1): self
+    {
+        $this->idTest = $question1;
 
+        return $this;
+    }
     public function getQuestion1(): ?string
     {
         return $this->question1;
@@ -296,12 +301,12 @@ class Test
         return $this;
     }
 
-    public function getTemps(): ?int
+    public function getTemps(): ?\DateTimeInterface
     {
         return $this->temps;
     }
 
-    public function setTemps(?int $temps): self
+    public function setTemps(\DateTimeInterface $temps): self
     {
         $this->temps = $temps;
 
