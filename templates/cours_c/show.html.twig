@@ -1,0 +1,38 @@
+
+
+{% block title %}Cours{% endblock %}
+
+{% block body %}
+    <h1>Cours</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cour.Id_cours }}</td>
+            </tr>
+            <tr>
+                <th>Nom_cours</th>
+                <td>{{ cour.nomCours }}</td>
+            </tr>
+            <tr>
+                <th>Domaine</th>
+                <td>{{ cour.domaine }}</td>
+            </tr>
+            <tr>
+                <th>Lien</th>
+                <td>{{ cour.lien }}</td>
+            </tr>
+            <tr>
+                <th>Lien2</th>
+                <td>{{ cour.lien2 }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('cours_c_index') }}">back to list</a>
+
+    <a href="{{ path('cours_c_edit', {'id': cour.Id_cours}) }}">edit</a>
+
+    {{ include('cours_c/_delete_form.html.twig') }}
+{% endblock %}
