@@ -1,0 +1,10 @@
+# Windows configuration
+knp_snappy:
+  pdf:
+    enabled: true
+    binary: '%kernel.project_dir%/vendor/wemersonjanuario/wkhtmltopdf-windows/bin/64bit/wkhtmltopdf.exe'
+    options:
+      no-outline: true
+      page-size: A4
+      encoding: UTF-8
+

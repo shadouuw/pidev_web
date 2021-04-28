@@ -1,0 +1,61 @@
+
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
+    providers:
+        my:
+            entity :
+                class : 'App\Entity\User'
+                property : 'nomUtilisateur'
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+
+            form_login:
+                login_path : login
+                check_path : login
+                default_target_path: login
+
+
+
+                provider: my
+
+
+
+
+            logout :
+                path : /logout
+                target : /login
+
+
+
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+
+    - { path: ^/login, roles: [IS_AUTHENTICATED_ANONYMOUSLY , ROLE_B ]}
+    - { path: ^/cours/c, roles: [ROLE_ADMIN , ROLE_TEACHER, ROLE_B ] }
+    - { path: ^/blog/blog_index, roles: [ROLE_ADMIN] }
+    - { path: ^/blog/blog_new, roles: [ROLE_ADMIN] }
+    - { path: ^/front_log, roles: ROLE_USER }
+    - { path: ^/cours_detail, roles: ROLE_USER }
+    - { path: ^/cours_front, roles: ROLE_USER }
+    - { path: ^/test_front, roles: ROLE_USER }
+    - { path: ^/blog_front, roles: ROLE_USER }
+    - { path: ^/user/new, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/classe/new, roles: [ROLE_ADMIN , ROLE_TEACHER] }
+    - { path: ^/reclamation/index_reclamation, roles: [ROLE_ADMIN ] }
+    - { path: ^/reclamation/new, roles: [ROLE_USER ] }
