@@ -37,6 +37,7 @@ class SecurityController extends AbstractController
     public function login(Request $request, AuthenticationUtils $utils): Response
 
     {
+        //echo "<script> alert('hi'); </script>";
         $session = $this->get('session');
        $hi= $session->get('test');
         $session->set('test','555555');

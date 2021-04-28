@@ -52,6 +52,11 @@ class Commentaire
      */
     private $iduser;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $rating;
+
     public function getIdCommentaire(): ?int
     {
         return $this->idCommentaire;
@@ -113,6 +118,18 @@ class Commentaire
     public function setIduser(int $iduser): self
     {
         $this->iduser = $iduser;
+
+        return $this;
+    }
+
+    public function getRating(): ?int
+    {
+        return $this->rating;
+    }
+
+    public function setRating(int $rating): self
+    {
+        $this->rating = $rating;
 
         return $this;
     }

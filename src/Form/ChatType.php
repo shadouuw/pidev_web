@@ -2,26 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Commentaire;
+use App\Entity\Chat;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Brokoskokoli\StarRatingBundle\Form\RatingType;
 
-class CommentaireType extends AbstractType
+class ChatType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('contenu') // l commentaire eli zedneh (frontcontroller.phh fonction : blog_details)
-            ->add('rating', RatingType::class);
+            ->add('message')
+            ->add('dateenvoi')
 
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Commentaire::class,
+            'data_class' => Chat::class,
         ]);
     }
 }

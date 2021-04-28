@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Entity;
-use  Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,8 +23,7 @@ class Concours
 
     /**
      * @var string
-     *  @Assert\Length(min=10,minMessage="name length must be greater than 10 ")
-     * @Assert\NotNull(message="name is empty ")
+     *
      * @ORM\Column(name="nom_concours", type="string", length=60, nullable=false)
      */
     private $nomConcours;

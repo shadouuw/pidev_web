@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Cours;
+use App\Entity\Test;
 use App\Entity\Notification;
 use App\Entity\Reclamation;
 use App\Entity\User;
 use App\Form\Cours1Type;
 use App\Repository\CoursRepository;
 use App\Repository\NotificationRepository;
+use App\Repository\TestRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,14 +26,34 @@ class CoursCController extends AbstractController
     /**
      * @Route("/", name="cours_c_index", methods={"GET"})
      */
-    public function index(CoursRepository $coursRepository,UserRepository $userRepository,NotificationRepository  $notificationRepository): Response
+    public function index(CoursRepository $coursRepository,UserRepository $userRepository,NotificationRepository  $notificationRepository, TestRepository $testRepository): Response
     {
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_B'))
+        {
+
+
+
+            return $this->redirectToRoute('logout');
+        }
+
         if ($this->get('security.authorization_checker')->isGranted('ROLE_USER'))
         {
+
             return $this->redirectToRoute('front');
         }
 
+
+
         else {
+            if($lol = $testRepository->createQueryBuilder('t')->select('count(t)')->where("t.temps < :date")->andWhere('t.status = 0')->setParameter('date',new \DateTime('now'))->getQuery()->getScalarResult() != 0 )
+            {
+
+                $testRepository->createQueryBuilder('t')->update('App\Entity\Test','t')->set('t.status' , '2' )->set('t.note' , '0')->where("t.temps < :date")->andWhere('t.status = 0')->setParameter('date',new \DateTime('now'))->getQuery()->execute();
+                $this->getDoctrine()->getManager()->flush();
+            }
+
+
             $tot=$coursRepository->createQueryBuilder('c')->select('count(c)')->getQuery()->getSingleScalarResult();
             $calcm=$coursRepository->createQueryBuilder('c')->select('count(c)')->where("c.domaine = 'Math'")->getQuery()->getSingleScalarResult();
             $calcf=$coursRepository->createQueryBuilder('c')->select('count(c)')->where("c.domaine = 'French'")->getQuery()->getSingleScalarResult();
@@ -56,6 +78,7 @@ $tot=$userRepository->createQueryBuilder('c')->select('count(c)')->getQuery()->g
                 'st2'=>$calcf,
                 'st3'=>$calce,
                 'stat1'=>$age1,
+
 
                 'stat2'=>$age2,
                 'stat3' => $age3,
@@ -154,8 +177,23 @@ $tot=$userRepository->createQueryBuilder('c')->select('count(c)')->getQuery()->g
     public function search(Request $request, CoursRepository $coursRepository): Response
     {
         $nom = $_GET['nom'];
+
+        $qb = $coursRepository->createQueryBuilder('u');
+        $couurs= $qb->select('u')->where(
+            $qb->expr()->like('u.nomCours', ':user')
+        )
+           ->orWhere(
+                $qb->expr()->like('u.idCours', ':user')
+            )
+            ->orWhere(
+                $qb->expr()->like('u.lien', ':user')
+            )
+            ->setParameter('user','%'.$nom.'%')
+            ->getQuery()->getResult();
+
         return $this->render('cours_c/course.html.twig', [
-            'cours' => $coursRepository->createQueryBuilder('u')->select('u')->where("u.nomCours = '".$nom."' ")->getQuery()->getResult(),
+            'cours' =>  $couurs,
+
             'img' => $this->getUser()->getImg(),
             'notifs' => $this->getDoctrine()
                 ->getRepository(Notification::class)
@@ -191,7 +229,7 @@ $tot=$userRepository->createQueryBuilder('c')->select('count(c)')->getQuery()->g
     public function index2(CoursRepository $coursRepository): Response
     {
         return $this->render('cours_c/course.html.twig', [
-            'cours' => $coursRepository->createQueryBuilder('u')->select('u')->orderBy('u.idCours')->getQuery()->getResult(),
+            'cours' => $coursRepository->createQueryBuilder('u')->select('u')->orderBy('u.idCours' , 'desc')->getQuery()->getResult(),
             'img' => $this->getUser()->getImg(),
             'notifs' => $this->getDoctrine()
                 ->getRepository(Notification::class)
